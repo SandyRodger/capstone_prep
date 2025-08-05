@@ -98,4 +98,14 @@ IS THE BIG TAKE-AWAY FROM THIS HELLISH DEBUGGING EXPERIENCE THAT IT'S OFTEN BETT
 - Step 2: block everything else:
   - `sudo ufw enable`
 - Step 3: disable root account (as a "good practice" precaution)
-  - `sudo vin /etc/ssh/sshd_config`
+  - `sudo vim /etc/ssh/sshd_config`
+    - `i` to enter editing mode
+    - change `permit root login` to `no`
+    - `escape` to leave editing mode.
+    - exit with `:wq`
+  - refresh with `sudo service ssh restart`
+    - `logout`
+    - try and log in with `ssh root@164.92.150.102` -> not permitted -> correct
+    - log in with `ssh sandy@164.92.150.102` -> allowed -> correct
+- [24:00] Awesome -> we have successfully:
+  1. 
