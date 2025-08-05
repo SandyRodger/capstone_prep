@@ -107,5 +107,14 @@ IS THE BIG TAKE-AWAY FROM THIS HELLISH DEBUGGING EXPERIENCE THAT IT'S OFTEN BETT
     - `logout`
     - try and log in with `ssh root@164.92.150.102` -> not permitted -> correct
     - log in with `ssh sandy@164.92.150.102` -> allowed -> correct
-- [24:00] Awesome -> we have successfully:
-  1. 
+- [23:50] Awesome -> we have successfully:
+  1. Turned on the firewall
+  2. created an unprivileged account
+  3. given that unprivileged account a way to escalate its permissions
+  4. Disabled root to help further lock-down the server
+- Next steps:
+  1. install node (because we're going to be running an express app that was written in javascript)
+     - `sudo apt update`
+     - `sudo apt install nodejs`
+     - `sudo apt install npm`
+
