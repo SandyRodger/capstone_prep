@@ -86,4 +86,16 @@ IS THE BIG TAKE-AWAY FROM THIS HELLISH DEBUGGING EXPERIENCE THAT IT'S OFTEN BETT
   - `rsync --archive --chown=sandy:sandy ~/.ssh/ /home/sandy/.ssh/` -> success (chatGPT)
   - To test this works:
     - disconnect with control-D
-    - reconnect with ssh sandy@164.92.150.102
+    - reconnect with ssh sandy@164.92.150.102 -> success
+  - [19:10] test it works with `sudo apt-get update` -> works
+- [19:30] Set up firewall
+- ufw is the name of the software firewall that comes with "the machine"
+- `ufw status` -> error: you need to be root to run this command
+- `sudo ufw status` (sudo password: bloast)
+  - status : inactive
+- Step 1 enable ssh trafic:
+  - `sudo ufw allow OpenSSH`
+- Step 2: block everything else:
+  - `sudo ufw enable`
+- Step 3: disable root account (as a "good practice" precaution)
+  - `sudo vin /etc/ssh/sshd_config`
