@@ -64,3 +64,26 @@
   - Have an account on digital Ocean.
 
 - digital ocean passphrase 5.8.25: 'not on your nelly'
+- [10:00] : Your public key has been saved in /Users/sandyboy/.ssh/id_ed25519.pub
+  - Your identification has been saved in /Users/sandyboy/.ssh/id_ed25519
+  - cat ~/.ssh/id_ed25519.pub
+  - name: `digital-ocean-1`
+  - hostname: `ubuntu-s-1vcpu-512mb-10gb-ams3-01`
+
+IS THE BIG TAKE-AWAY FROM THIS HELLISH DEBUGGING EXPERIENCE THAT IT'S OFTEN BETTER TO GO SCORCHED EARTH?
+
+- [13:22] next step: SECURITY
+  - firewall to disable traffic except for SSH
+- Create an unprivileged account without using `sudo` (the principle of least privilege).
+  - ssh root@164.92.150.102
+  - `yes`
+  - `adduser sandy`
+  - password: `bloast`
+- allow user to escalate to sudo when necessary:
+  - `usermod -aG sudo sandy`
+- [17:00] move the public SSH key to the VPS into this unprivileged account. (from root to sandy):
+  - `rsync --archive --chown=sandy:sandy ~/.ssh/home/sandy` -> FAIL
+  - `rsync --archive --chown=sandy:sandy ~/.ssh/ /home/sandy/.ssh/` -> success (chatGPT)
+  - To test this works:
+    - disconnect with control-D
+    - reconnect with ssh sandy@164.92.150.102
