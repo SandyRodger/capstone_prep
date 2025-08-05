@@ -62,3 +62,5 @@
 
 - [05:22] Step 1: create a VPS we can connect to through an IP address.
   - Have an account on digital Ocean.
+
+- digital ocean passphrase 5.8.25: 'not on your nelly'
