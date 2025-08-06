@@ -117,4 +117,21 @@ IS THE BIG TAKE-AWAY FROM THIS HELLISH DEBUGGING EXPERIENCE THAT IT'S OFTEN BETT
      - `sudo apt update`
      - `sudo apt install nodejs`
      - `sudo apt install npm`
-
+   2. Clone app from Github:
+      - `https://github.com/SandyRodger/dummy_app.git` (clone with HTTPS)
+      - in terminal: `git clone https://github.com/SandyRodger/dummy_app.git`
+   3. [27:00] 
+      - confirm presence of app with `ls`
+      - check firewall status with `sudo ufw status`
+      - permit the coresponding port to be permitted (3000):
+        - `sudo ufw allow 3000`
+      - Make sure you have a `package.json` file with `npm init -y`
+      - install express: `npm install express`
+      - rerun `npm install` to make sure express is there.
+      - run app with `node 02.js`
+      - re-jig dummy app so the server-side code is seperate from the code that runs in the browser.
+      - update from github with `git pull origin main`
+      - run with `node server.js` (not node app.js because that would be running the file in node, where it doens't make sense)
+        -  but in the instructions he DOES use `node app.js` and it works, so I've done something slightly different here.
+  -  [30:15] pause for today
+      - `http://164.92.150.102:3000/` works
