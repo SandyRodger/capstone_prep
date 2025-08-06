@@ -139,7 +139,7 @@ IS THE BIG TAKE-AWAY FROM THIS HELLISH DEBUGGING EXPERIENCE THAT IT'S OFTEN BETT
 - [31:15] close off the firewall in order to perform a test:
   - `sudo ufw delete allow 3000`
   - confirm it's been deleted with `sudo ufw status`
-4. [32:10] Give it a domain name:
+- [32:10] Give it a domain name:
   - `bloast.nl` with squarespace
   - squarespace domain
     - [33:35] DNS "where it should point traffic that's trying to hit bloast.nl`
@@ -148,4 +148,49 @@ IS THE BIG TAKE-AWAY FROM THIS HELLISH DEBUGGING EXPERIENCE THAT IT'S OFTEN BETT
       - 'we were unable to save this record. if the problem persists please contact customer support'.
       - and thw `www` doesn't work for a different reason: "This host is already in use by a CNAME record."
       - So I deleted the squarespace defaults and it fixed both problems (hooray)
+- test if domain is live:
+  - `exit` to exit shell terminal
+  - `ssh sandy@bloast.nl`
+  - enter passphrase ('not on your nelly')
+4. [37:10] Set up NGINX
+  - update repository to make sure everything's up to date: `sudo apt update`
+  - install nginx: `sudo apt install nginx`
+    - nginx is going to serve as the web-server and a reverse proxy, so it will route requests on to where they need to go.
+    - nginx is a default web-seerver/ reverse proxy for the internet -> super production ready, supported by Apache.
+  -  enable traffic to interact with nginx from the internet
+  -  `sudo ufw app list`:
+```
+Available applications:
+  Nginx Full
+  Nginx HTTP
+  Nginx HTTPS
+  Nginx QUIC
+  OpenSSH
+```
+  -  [39:50] `sudo ufw allow 'Nginx HTTP'`
+  -  check with `sudo ufw status`
+  -  `systemctl status nginx` (ctl-c out)
+-  [41:40] `sudo vim /etc/nginx/sites-available/default`
+  -  change `server_name _;` to `server_name bloast.nl www.bloast.nl`
+  -  [42:45] test your config file while making changes:
+    -  `sudo nginx -t` - success message.
+    - `sudo systemctl reload nginx`
+     - test by going to `www.bloast.nl` -> works
+   - [44:25] `sudo vim /etc/nginx/sites-available/default` again
+     - "We're gonna want to tell nginx to route requests to our app" =>
+     - copy some quick config information here:
+     - replace location block ith information about out app
+     - I don't know where he's pasting this info in from, but I'm going to have to type it out:
+```
+location / {
+  proxy_pass http://localhost:3000;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection 'upgrade';
+  proxy_set_header Host $host;
+  proxy_cache_bypass $http_upgrade;
+}
+```
+- confirm that config file is ok : `sudo nginx -t` => success
+- `sudo systemctl reload nginx`
 
