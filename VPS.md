@@ -135,3 +135,17 @@ IS THE BIG TAKE-AWAY FROM THIS HELLISH DEBUGGING EXPERIENCE THAT IT'S OFTEN BETT
         -  but in the instructions he DOES use `node app.js` and it works, so I've done something slightly different here.
   -  [30:15] pause for today
       - `http://164.92.150.102:3000/` works
+  - [31:00] Ido (the narrator) demonstrates that if you shut down the app (with control +C) then it is no longer accessible in the browser. But my app is accessible. Presumably because I am running the server on the digital ocean droplet, not running that one file. I'm a little unclear on this, but I'll keep going.
+- [31:15] close off the firewall in order to perform a test:
+  - `sudo ufw delete allow 3000`
+  - confirm it's been deleted with `sudo ufw status`
+4. [32:10] Give it a domain name:
+  - `bloast.nl` with squarespace
+  - squarespace domain
+    - [33:35] DNS "where it should point traffic that's trying to hit bloast.nl`
+      - "the way that you do that is through these what are called 'A-records'
+      - custom records (not the same on the video because he's using google where I'm using squarespace.
+      - 'we were unable to save this record. if the problem persists please contact customer support'.
+      - and thw `www` doesn't work for a different reason: "This host is already in use by a CNAME record."
+      - So I deleted the squarespace defaults and it fixed both problems (hooray)
+
