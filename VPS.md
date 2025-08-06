@@ -117,7 +117,7 @@ IS THE BIG TAKE-AWAY FROM THIS HELLISH DEBUGGING EXPERIENCE THAT IT'S OFTEN BETT
      - `sudo apt update`
      - `sudo apt install nodejs`
      - `sudo apt install npm`
-   2. Clone app from Github:
+   2. [25:20] Clone app from Github:
       - `https://github.com/SandyRodger/dummy_app.git` (clone with HTTPS)
       - in terminal: `git clone https://github.com/SandyRodger/dummy_app.git`
    3. [27:00] 
@@ -193,4 +193,83 @@ location / {
 ```
 - confirm that config file is ok : `sudo nginx -t` => success
 - `sudo systemctl reload nginx`
+- OK here I have a bug caused by the fact that my dummy app is doing something quite different to his. So I'm going to copy his app exactly in order to get around this issue.
+- Current state of project files:
+- tree
+```
+hello there: tree
+.
+├── package.json
+├── public
+│   ├── index.html
+│   └── script.js
+└── server.js
+
+2 directories, 4 files
+```
+- server.js:
+```
+const express = require('express');
+const app = express();
+const port = 3000;
+
+app.use(express.static('public'));
+
+app.listen(port, () => console.log('Running your bastard app'));
+```
+- index.html:
+```
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sandy's app</title>
+    <script type="module" src="./script.js"></script>
+  </head>
+  <body>
+    <button>Click me</button>
+  </body>
+</html>
+
+```
+- script.js:
+```
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('button').addEventListener('click', () => {
+    alert('you are a sexy man');
+  });
+});
+```
+- [47:00] -> running the app
+- [47:40] -> next step: set up PM2 : process manager
+  - `sudo npm install pm2@latest -g`
+  - `pm2 start server.js`
+- Tell pm2 to start up whenever system d starts up
+- (system D is like the process manager for linux).
+- `pm2 startup systemd`
+  - returns : `sudo env PATH=$PATH:/usr/bin /usr/local/lib/node_modules/pm2/bin/pm2 startup systemd -u sandy --hp /home/sandy`
+  - copy and paste that in the command line.
+  - save changes with `pm2 save`
+  - [51:00] `sudo reboot`
+  - get back in with `ssh sandy@bloast.nl`
+  - [52:00] get outselves an SSL certificate to secure our website and hit it with https.
+  - use letsencrypt and certbot:
+    - `sudo add-apt-repository ppa:certbot/certbot`
+  - hmmm, there's no delay for me.
+  - This part is deprecated. Follow these: https://certbot.eff.org/instructions?ws=nginx&os=osx
+    - `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+    - `brew install certbot`
+    - `sudo certbot certonly --standalone`
+  - BUG: I can't install the certificate:
+    - Maybe it's trying to ifnd the app on port 80 rather than port 3000 -> no, it must use port 80
+      - stop running server on pm2: `pm2 stop server`
+      - `sudo certbot certonly --standalone -d bloast.nl`
+    - try and fix by using standalone mode:
+      - stop anything on port 80:
+        - `sudo systemctl stop nginx`
+        - `sudo systemctl stop apache2`
+        - `sudo lsof -i :80  # should show nothing`
+
+
 
