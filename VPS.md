@@ -1,4 +1,4 @@
-## [Setting up a VPS](https://3.basecamp.com/3695031/buckets/42750717/todos/8783061488)
+# [Setting up a VPS](https://3.basecamp.com/3695031/buckets/42750717/todos/8783061488)
 - Virtual private server. A virtual machine sold as a service by a cloud hosting provider.
 - A VPS is functionaly equivalent to a dedicated physical server (but way cheaper). eg:
   -  Digital Ocean droplets
@@ -41,7 +41,7 @@
 
 ### [tutorial](https://launchschool.com/gists/79b8e672)
 
-#### Youtube tutorial:
+### Youtube tutorial:
 
 - How to set up a virtual Private Server on Digital Ocean -> a way to host your own website on the cloud.
 - Virtual Private server: a computer that someone else is managing for you (here DigitalOcean)
@@ -117,6 +117,7 @@ IS THE BIG TAKE-AWAY FROM THIS HELLISH DEBUGGING EXPERIENCE THAT IT'S OFTEN BETT
      - `sudo apt update`
      - `sudo apt install nodejs`
      - `sudo apt install npm`
+### clone app from Github
    2. [25:20] Clone app from Github:
       - `https://github.com/SandyRodger/dummy_app.git` (clone with HTTPS)
       - in terminal: `git clone https://github.com/SandyRodger/dummy_app.git`
@@ -258,11 +259,32 @@ document.addEventListener('DOMContentLoaded', () => {
     - `sudo add-apt-repository ppa:certbot/certbot`
   - hmmm, there's no delay for me.
   - This part is deprecated. Follow these: https://certbot.eff.org/instructions?ws=nginx&os=osx
+*********************************** HERE'S WHERE IT'S ALL GOING WRONG *********************************************
     - `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+      - This homebrew install is failing.  ->:
+        - ChatGPT soultution: create swap memory:
+    ```
+      sudo fallocate -l 1G /swapfile
+      sudo chmod 600 /swapfile
+      sudo mkswap /swapfile
+      sudo swapon /swapfile
+      echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+    ```
+- then `free -h` to check it worked.
+- then make sure the command is available:
+```
+echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.bashrc
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+```
+- and manually finish the install:
+  - `brew update --force --quiet`
+- and make sure it's running:
+  - `brew doctor`
+### Certbot
     - `brew install certbot`
     - `sudo certbot certonly --standalone`
   - BUG: I can't install the certificate:
-    - Maybe it's trying to ifnd the app on port 80 rather than port 3000 -> no, it must use port 80
+    - Maybe it's trying to find the app on port 80 rather than port 3000 -> no, it must use port 80
       - stop running server on pm2: `pm2 stop server`
       - `sudo certbot certonly --standalone -d bloast.nl`
     - try and fix by using standalone mode:
@@ -270,6 +292,70 @@ document.addEventListener('DOMContentLoaded', () => {
         - `sudo systemctl stop nginx`
         - `sudo systemctl stop apache2`
         - `sudo lsof -i :80  # should show nothing`
+       
+        - Aha maybe the problem is i was trying to certify the domain name, not nginx?:
+          -  `sudo certbot --nginx -d bloast.nl -d www.bloast.nl`
+          -  ask for email address ->
+          -  terms of service -> agree
+    -  `sudo certbot renew --dry-run`
+   
+
+- ok certbot is installed now, but does not have access to teh `certbot` command from `sudo`, so I need to explicitly run `sudo` with the correct path:
+  - `sudo env PATH=$PATH certbot --nginx -d bloast.nl -d www.bloast.nl` AND IT WORKED!
+
+    -  [57:00] Conclusions, we have:
+      -  a VPS we can connect to via a domain name using HTTPS, securely, using NGINX as a webserver to route requests to our Express app which is being run as a service by pm2.
+
+### DNS records:
+- video: https://d30l2an5huagqb.cloudfront.net/system-design/dns_records_explanation.mp4
+- How they work, how they're stored and how they resolve into an IP address
+- [00:40] let's start with google.
+  - we redister a domain name with google and it now hosts our domain name, it points to an IP address
+  - how is 'alberdorfman.de' resolved to the IP address
+  - There is a "resolver" which seeks the address.
+  - There's a top-level domain name server, which leases the domains to businesses.
+- [03:56] The top level registrar ...
+
+### Install PostgreSQL
+
+- `https://www.postgresql.org/download/linux/ubuntu/`
+- intall with: `apt install postgresql`
 
 
+### Install MongoDB
+
+- mongoDB: https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/
+- What version of UBUNTU is running? `cat /etc/lsb-release` :
+
+```
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=25.04
+DISTRIB_CODENAME=plucky
+DISTRIB_DESCRIPTION="Ubuntu 25.04"
+```
+
+1. Import public key: 
+- install `gnpug` and `curl`:
+  - `sudo apt-get install gnupg curl`
+- Import mongoDB pupblic GPG key:
+  -`curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | \
+   sudo gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg \
+   --dearmor`
+2. Create lsit file:
+  - `echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] https://repo.mongodb.org/apt/ubuntu noble/mongodb-org/8.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list`
+3. reload package database: `sudo apt-get update`
+4. Install mongoDB community server: `sudo apt-get install -y mongodb-org`
+
+##### Run MongoDB:
+- `sudo systemctl start mongod`
+- verify it's started: `sudo systemctl status mongod`
+- stop mongoDB with this command: `sudo systemctl stop mongod`
+- restart with this: `sudo systemctl restart mongod`
+- Begin using MongoDB with this: `mongosh`.
+
+
+### Depoly a dynamic app
+
+- RB185 todolist app
+- `git clone https://github.com/SandyRodger/RB185-RB189.git`
 
