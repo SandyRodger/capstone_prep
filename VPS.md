@@ -358,4 +358,30 @@ DISTRIB_DESCRIPTION="Ubuntu 25.04"
 
 - RB185 todolist app
 - `git clone https://github.com/SandyRodger/RB185-RB189.git`
+`sudo apt update
+sudo apt install libpq-dev`
+`bundle install`
+- BUG -> conflict of using 2 different ruby versions:
+  - `sudo snap remove ruby`
+  - `export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"`
+- Rbenv not installed, install rbenv:
+  - `sudo apt update
+      sudo apt install -y git curl build-essential libssl-dev libreadline-dev zlib1g-dev`
+  - `git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(~/.rbenv/bin/rbenv init -)"' >> ~/.bashrc
+source ~/.bashrc
+ Now install ruby-build as a plugin
+mkdir -p "$(rbenv root)"/plugins
+git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build`
+- `rbenv install 3.2.2
+rbenv global 3.2.2
+rbenv rehash
+`
+- run out of space: `/tmp` is 100% full:
+  - `sudo rm -rf /tmp/*` -> empties tmp
+  - `df -h /tmp` -> check it's empty
+  - `rbenv install 3.2.2` -> try again
+ 
 
