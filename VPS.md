@@ -384,4 +384,31 @@ rbenv rehash
   - `df -h /tmp` -> check it's empty
   - `rbenv install 3.2.2` -> try again
  
+- still no enough space, so setup another directory to hosue it:
+```
+mkdir -p ~/tmp
+export TMPDIR=~/tmp
+```
+- try again
+  - `rbenv install 3.2.2` -> nailed it
+  - `bundle exec ruby todo.rb`
 
+#### make sure it's being run by pm2:
+  - nano ecosystem.config.js
+```
+module.exports = {
+  apps: [{
+    name: "sinatra-todo-app",
+    script: "todo.rb",
+    interpreter: "bundle",
+    args: "exec ruby",
+    cwd: "/home/sandy/RB185-RB189/03_todo_app",
+    env: {
+      RACK_ENV: "production"
+    }
+  }]
+};
+```
+  - pm2 start ecosystem.config.js
+
+### hmmmm nothing is running on the browsers now. Ill concentrate on getting bloast.nl back up
