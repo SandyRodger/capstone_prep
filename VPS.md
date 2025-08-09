@@ -71,7 +71,7 @@
   - hostname: `ubuntu-s-1vcpu-512mb-10gb-ams3-01`
 
 IS THE BIG TAKE-AWAY FROM THIS HELLISH DEBUGGING EXPERIENCE THAT IT'S OFTEN BETTER TO GO SCORCHED EARTH?
-
+### Firewall
 - [13:22] next step: SECURITY
   - firewall to disable traffic except for SSH
 - Create an unprivileged account without using `sudo` (the principle of least privilege).
@@ -153,6 +153,9 @@ IS THE BIG TAKE-AWAY FROM THIS HELLISH DEBUGGING EXPERIENCE THAT IT'S OFTEN BETT
   - `exit` to exit shell terminal
   - `ssh sandy@bloast.nl`
   - enter passphrase ('not on your nelly')
+
+### Nginx
+
 4. [37:10] Set up NGINX
   - update repository to make sure everything's up to date: `sudo apt update`
   - install nginx: `sudo apt install nginx`
@@ -254,6 +257,9 @@ document.addEventListener('DOMContentLoaded', () => {
   - save changes with `pm2 save`
   - [51:00] `sudo reboot`
   - get back in with `ssh sandy@bloast.nl`
+
+### letsEncrypt
+
   - [52:00] get outselves an SSL certificate to secure our website and hit it with https.
   - use letsencrypt and certbot:
     - `sudo add-apt-repository ppa:certbot/certbot`
@@ -346,14 +352,23 @@ DISTRIB_DESCRIPTION="Ubuntu 25.04"
 3. reload package database: `sudo apt-get update`
 4. Install mongoDB community server: `sudo apt-get install -y mongodb-org`
 
-##### Run MongoDB:
 - `sudo systemctl start mongod`
 - verify it's started: `sudo systemctl status mongod`
 - stop mongoDB with this command: `sudo systemctl stop mongod`
 - restart with this: `sudo systemctl restart mongod`
 - Begin using MongoDB with this: `mongosh`.
 
+- not sure what the points above are for. I'm going to purge and start from scratch:
 
+```
+sudo systemctl stop mongod
+sudo apt-get purge -y mongodb-org*
+sudo rm -rf /var/lib/mongodb /var/log/mongodb
+sudo rm -f /etc/apt/sources.list.d/mongodb-org*.list
+sudo rm -f /usr/share/keyrings/mongodb-server-*.gpg
+```
+
+- mongo cluster: `capstonePrepCluster`
 ### Depoly a dynamic app
 
 - RB185 todolist app
@@ -394,6 +409,7 @@ export TMPDIR=~/tmp
   - `bundle exec ruby todo.rb`
 
 #### make sure it's being run by pm2:
+
   - nano ecosystem.config.js
 ```
 module.exports = {
@@ -411,4 +427,87 @@ module.exports = {
 ```
   - pm2 start ecosystem.config.js
 
-### hmmmm nothing is running on the browsers now. Ill concentrate on getting bloast.nl back up
+### hmmmm nothing is running on the browsers now. Ill concentrate on getting bloast.nl back up:
+
+- `pm2 list` to show what is running:
+
+```
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ server             │ fork     │ 2    │ online    │ 0%       │ 29.3mb   │
+│ 2  │ sinatra-todo-app   │ fork     │ 0    │ online    │ 0%       │ 2.5mb    │
+```
+
+- so, it's running, but not appearing in the browser.
+- ChatGPT plan:
+  1. Is the express app responding on port 3000: -> yes
+     - `curl http://localhost:3000`:
+```
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sandy's app</title>
+    <script type="module" src="./script.js"></script>
+  </head>
+  <body>
+    <button>Click me</button>
+  </body>
+</html>
+```
+  2. Check if NGINX is correctly routing to port 3000:
+     - `sudo vim /etc/nginx/sites-available/default`
+  3. Check whether firewall is allowing through HTTP/HTTP traffic:
+     - `sudo ufw status`
+- CHatGTP says the problem is:
+  - "your Nginx config lacks a server block for HTTPS (443) to actually serve your app.
+Certbot rewrote your config to redirect all HTTP traffic to HTTPS — but then you have no instructions for what to do when HTTPS traffic arrives."
+    - but I think it was ok after certbot, and only broke later...
+- fix:
+  - add an HTTPS server block to `/etc/nginx/sites-available/default`:
+```
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name bloast.nl www.bloast.nl;
+
+    ssl_certificate /etc/letsencrypt/live/bloast.nl/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/bloast.nl/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+-test with `sudo nginx -t`
+- ABANDON CHATGPT, CLEAVE TO THE ORIGINAL INSTRUCTIONS.
+
+#### Saturday 9th August - still trying to get my 2 apps working in the browser:
+
+1. Check that bloast.nl is pointing to the same IP address as the virtual machine I'm using:
+```
+# Public IP of this Droplet
+curl -4 ifconfig.me
+
+# Does bloast.nl point here? (should match the IP above)
+dig +short A bloast.nl
+```
+2. Nginx/firewall sanity check:
+```
+sudo systemctl status nginx --no-pager
+sudo ufw status
+sudo ufw allow 'Nginx Full'    # opens 80/443
+```
+- That did it! So it was the firewall in the end.
+
+2. Add `sinatra.bloast.nl`
