@@ -369,6 +369,17 @@ sudo rm -f /usr/share/keyrings/mongodb-server-*.gpg
 ```
 
 - mongo cluster: `capstonePrepCluster`
+- mongodb+srv://sandy:crotBang@capstoneprepcluster.2h6jkjb.mongodb.net/?retryWrites=true&w=majority&appName=capstonePrepCluster
+
+export MONGO_URL='mongodb+srv://sandy:crotBang@capstoneprepcluster.2h6jkjb.mongodb.net/?retryWrites=true&w=majority&appName=capstonePrepCluster'
+pm2 restart sinatra-todo-app --update-env
+pm2 logs sinatra-todo-app
+
+sudo certbot --nginx -d sinatra.bloast.nl
+
+sudo systemctl reload nginx
+curl -I https://sinatra.bloast.nl
+
 ### Depoly a dynamic app
 
 - RB185 todolist app
@@ -511,3 +522,4 @@ sudo ufw allow 'Nginx Full'    # opens 80/443
 - That did it! So it was the firewall in the end.
 
 2. Add `sinatra.bloast.nl`
+
