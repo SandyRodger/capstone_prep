@@ -313,6 +313,76 @@ janja.greet()
 
 ### [c Component state, event handlers](https://fullstackopen.com/en/part1/component_state_event_handlers)
 
+- start with this:
+```
+const Hello = (props) => {
+  return (
+    <div>
+      <p>
+        Hello {props.name}, you are {props.age} years old
+      </p>
+    </div>
+  )
+}
+
+const App = () => {
+  const name = 'Peter'
+  const age = 10
+
+  return (
+    <div>
+      <h1>Greetings</h1>
+      <Hello name="Maya" age={26 + 10} />
+      <Hello name={name} age={age} />
+    </div>
+  )
+}
+```
+###### Component helper functions
+
+```
+const Hello = (props) => {
+
+  const bornYear = () => {
+    const yearNow = new Date().getFullYear()
+    return yearNow - props.age
+  }
+
+  return (
+    <div>
+      <p>
+        Hello {props.name}, you are {props.age} years old
+      </p>
+
+      <p>So you were probably born in {bornYear()}</p>
+    </div>
+  )
+}
+```
+
+###### Destructuring
+
+```
+const Hello = (props) => {
+  const { name, age } = props
+```
+
+###### Page re-rendering
+
+```
+const App = (props) => {
+  const {counter} = props
+  return (
+    <div>{counter}</div>
+  )
+}
+
+export default App
+```
+
+###### Stateful component (+ State Hook)
+
+
 
 ### d A more complex state, debugging React apps
 
