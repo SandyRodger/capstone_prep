@@ -339,7 +339,6 @@ const App = () => {
 }
 ```
 ###### Component helper functions
-
 ```
 const Hello = (props) => {
 
@@ -894,6 +893,383 @@ const App = () => {
 
 ### exercises:
 1. 
+```
+import { useState } from 'react'
+
+const Button = ({onClick, text}) => <button onClick={onClick}>{text}</button>
+const App = () => {
+
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
+
+  return (
+    <div>
+      <h1>give feedback</h1>
+      <Button 
+        onClick={() => setGood(good + 1)}
+        text='good'
+      />
+      <Button 
+        onClick={() => setNeutral(neutral + 1)}
+        text='neutral'
+      />
+      <Button 
+        onClick={() => setBad(bad + 1)}
+        text='bad'
+      />
+      <h1>statistics</h1>
+      <div>Goods: {good}</div>
+      <div>Neutral: {neutral}</div>
+      <div>Bad: {bad}</div>
+    </div>
+  )
+}
+
+export default App
+```
+2.
+```
+import { useState } from 'react'
+
+const Button = ({onClick, text}) => <button onClick={onClick}>{text}</button>
+const Display = ({counter, text}) => <div>{text} : {counter}</div>
+const total = (...nums) => nums.reduce((v, a) => v + a)
+const average = (good, neutral, bad) => (good - bad) / total(good, neutral, bad)
+const positive = (good, neutral, bad) => (good/total(good, neutral, bad)) * 100
+
+const App = () => {
+
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
+  return (
+    <div>
+      <h1>give feedback</h1>
+      <Button 
+        onClick={() => setGood(good + 1)}
+        text='good'
+      />
+      <Button 
+        onClick={() => setNeutral(neutral + 1)}
+        text='neutral'
+      />
+      <Button 
+        onClick={() => setBad(bad + 1)}
+        text='bad'
+      />
+      <h1>statistics</h1>
+      <Display counter={good} text='good'/>
+      <Display counter={neutral} text='neutral'/>
+      <Display counter={bad} text='bad'/>
+      <Display counter={total(good, bad, neutral)} text='all'/>
+      <Display counter={average(good, neutral, bad)} text='average'/>
+      <Display counter={positive(good, neutral, bad)} text='positive'/>
+    </div>
+  )
+}
+
+export default App
+```
+
+3. 
+```
+import { useState } from 'react'
+
+const Button = ({onClick, text}) => <button onClick={onClick}>{text}</button>
+const Display = ({counter, text}) => <div>{text} : {counter}</div>
+const total = (...nums) => nums.reduce((v, a) => v + a)
+const average = (good, neutral, bad) => (good - bad) / total(good, neutral, bad)
+const positive = (good, neutral, bad) => (good/total(good, neutral, bad)) * 100
+const Statistics = ({good, bad, neutral}) => {
+  return (
+    <div>
+      <h1>statistics</h1>
+      <Display counter={good} text='good'/>
+      <Display counter={neutral} text='neutral'/>
+      <Display counter={bad} text='bad'/>
+      <Display counter={total(good, bad, neutral)} text='all'/>
+      <Display counter={average(good, neutral, bad)} text='average'/>
+      <Display counter={positive(good, neutral, bad)} text='positive'/>
+    </div>
+)}
+
+const App = () => {
+
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
+  return (
+    <div>
+      <h1>give feedback</h1>
+      <Button 
+        onClick={() => setGood(good + 1)}
+        text='good'
+      />
+      <Button 
+        onClick={() => setNeutral(neutral + 1)}
+        text='neutral'
+      />
+      <Button 
+        onClick={() => setBad(bad + 1)}
+        text='bad'
+      />
+      <Statistics good={good} neutral={neutral} bad={bad}/>
+    </div>
+  )
+}
+
+export default App
+```
+
+4.
+```
+import { useState } from 'react'
+
+const Button = ({onClick, text}) => <button onClick={onClick}>{text}</button>
+const Display = ({counter, text}) => <div>{text} : {counter}</div>
+const total = (...nums) => nums.reduce((v, a) => v + a)
+const average = (good, neutral, bad) => (good - bad) / total(good, neutral, bad)
+const positive = (good, neutral, bad) => (good/total(good, neutral, bad)) * 100
+const Statistics = ({good, bad, neutral}) => {
+  if (good || neutral || bad) {
+  return (
+    <div>
+      <h1>statistics</h1>
+      <Display counter={good} text='good'/>
+      <Display counter={neutral} text='neutral'/>
+      <Display counter={bad} text='bad'/>
+      <Display counter={total(good, bad, neutral)} text='all'/>
+      <Display counter={average(good, neutral, bad)} text='average'/>
+      <Display counter={positive(good, neutral, bad)} text='positive'/>
+    </div>
+)} else {
+  return (
+    <div>
+      <h1>statistics</h1>
+      <div>No feedback given</div>
+    </div>
+  )
+}}
+
+const App = () => {
+
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
+  return (
+    <div>
+      <h1>give feedback</h1>
+      <Button 
+        onClick={() => setGood(good + 1)}
+        text='good'
+      />
+      <Button 
+        onClick={() => setNeutral(neutral + 1)}
+        text='neutral'
+      />
+      <Button 
+        onClick={() => setBad(bad + 1)}
+        text='bad'
+      />
+      <Statistics good={good} neutral={neutral} bad={bad}/>
+    </div>
+  )
+}
+
+export default App
+```
+
+5.
+```
+import { useState } from 'react'
+
+const Button = ({onClick, text}) => <button onClick={onClick}>{text}</button>
+const StatisticLine = ({counter, text}) => <div>{text} : {counter} {text === 'positive' ? '%' : ''}</div>
+const total = (...nums) => nums.reduce((v, a) => v + a)
+const average = (good, neutral, bad) => (good - bad) / total(good, neutral, bad)
+const positive = (good, neutral, bad) => (good/total(good, neutral, bad)) * 100
+const Statistics = ({good, bad, neutral}) => {
+  if (good || neutral || bad) {
+  return (
+    <div>
+      <h1>statistics</h1>
+      <StatisticLine counter={good} text='good'/>
+      <StatisticLine counter={neutral} text='neutral'/>
+      <StatisticLine counter={bad} text='bad'/>
+      <StatisticLine counter={total(good, bad, neutral)} text='all'/>
+      <StatisticLine counter={average(good, neutral, bad)} text='average'/>
+      <StatisticLine counter={positive(good, neutral, bad)} text='positive'/>
+    </div>
+)} else {
+  return (
+    <div>
+      <h1>statistics</h1>
+      <div>No feedback given</div>
+    </div>
+  )
+}}
+
+const App = () => {
+
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
+  return (
+    <div>
+      <h1>give feedback</h1>
+      <Button 
+        onClick={() => setGood(good + 1)}
+        text='good'
+      />
+      <Button 
+        onClick={() => setNeutral(neutral + 1)}
+        text='neutral'
+      />
+      <Button 
+        onClick={() => setBad(bad + 1)}
+        text='bad'
+      />
+      <Statistics good={good} neutral={neutral} bad={bad}/>
+    </div>
+  )
+}
+
+export default App
+```
+
+6.
+```
+import { useState } from 'react'
+
+const Button = ({onClick, text}) => <button onClick={onClick}>{text}</button>
+const StatisticLine = ({counter, text}) => <tr><td>{text}</td><td>{counter}{text === 'positive' ? '%' : ''}</td></tr>
+const total = (...nums) => nums.reduce((v, a) => v + a)
+const average = (good, neutral, bad) => (good - bad) / total(good, neutral, bad)
+const positive = (good, neutral, bad) => (good/total(good, neutral, bad)) * 100
+const Statistics = ({good, bad, neutral}) => {
+  if (good || neutral || bad) {
+  return (
+    <>
+      <h1>statistics</h1>
+      <StatisticLine counter={good} text='good'/>
+      <StatisticLine counter={neutral} text='neutral'/>
+      <StatisticLine counter={bad} text='bad'/>
+      <StatisticLine counter={total(good, bad, neutral)} text='all'/>
+      <StatisticLine counter={average(good, neutral, bad)} text='average'/>
+      <StatisticLine counter={positive(good, neutral, bad)} text='positive'/>
+    </>
+)} else {
+  return (
+    <div>
+      <h1>statistics</h1>
+      <div>No feedback given</div>
+    </div>
+  )
+}}
+
+const App = () => {
+
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
+  return (
+    <div>
+      <h1>give feedback</h1>
+      <Button 
+        onClick={() => setGood(good + 1)}
+        text='good'
+      />
+      <Button 
+        onClick={() => setNeutral(neutral + 1)}
+        text='neutral'
+      />
+      <Button 
+        onClick={() => setBad(bad + 1)}
+        text='bad'
+      />
+      <Statistics good={good} neutral={neutral} bad={bad}/>
+    </div>
+  )
+}
+
+export default App
+```
+7.
+```
+import { useState } from 'react'
+
+const App = () => {
+  const anecdotes = [
+    'If it hurts, do it more often.',
+    'Adding manpower to a late software project makes it later!',
+    'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    'Premature optimization is the root of all evil.',
+    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+    'The only way to go fast, is to go well.'
+  ]
+   
+  const [selected, setSelected] = useState(0)
+  const handleClick = () => {
+    const index = Math.round(Math.random() * (anecdotes.length - 1))
+    setSelected(index)
+  }
+
+  return (
+    <>
+      <button onClick={handleClick}>Click for another</button>
+      <br></br>
+      {anecdotes[selected]}
+    </>
+  )
+}
+
+export default App
+```
+
+1.13 : step 2:
+
+```import { useState } from 'react'
+
+const App = () => {
+  const anecdotes = [
+    'If it hurts, do it more often.',
+    'Adding manpower to a late software project makes it later!',
+    'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    'Premature optimization is the root of all evil.',
+    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+    'The only way to go fast, is to go well.'
+  ]
+
+  const votes = Array.from({length: anectodes.length}, 0) 
+  const [selected, setSelected] = useState(0)
+  const newIndex = () => setSelected(Math.round(Math.random() * (anecdotes.length - 1)))
+  const upvote = () => {console.log(votes)}
+
+  return (
+    <>
+      {anecdotes[selected]}
+      <div>has {votes}votes</div>
+      <br></br>
+      <button onClick={upvote}>vote</button>
+      <button onClick={newIndex}>next anecdote</button>
+    </>
+  )
+}
+
+export default App
+```
+
 ## [part 3  - programming a server with NodeJS and Express](https://fullstackopen.com/en/part3)
 ## [part 5 - Testing React Apps](https://fullstackopen.com/en/part5)
 ## [Part 7: React Router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
