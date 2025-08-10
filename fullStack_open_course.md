@@ -380,15 +380,520 @@ const App = (props) => {
 export default App
 ```
 
-###### Stateful component (+ State Hook)
+###### Stateful component
+
+- state hook
+
+```
+import ReactDOM from 'react-dom/client'
+
+import App from './App'
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />)
+```
+
+```
+import { useState } from 'react'
+
+const App = () => {
+
+  const [ counter, setCounter ] = useState(0)
 
 
+  setTimeout(
+    () => setCounter(counter + 1),
+    1000
+  )
+
+  return (
+    <div>{counter}</div>
+  )
+}
+
+export default App
+```
+
+###### Event handling
+
+```
+import { useState } from 'react'
+
+const App = () => {
+
+  const [ counter, setCounter ] = useState(0)
+
+  const handleClick = () => {
+    console.log('clicked')
+  }
+
+  return (
+    <div>
+      <div>{counter}</div>
+      <button onClick={() => setCounter(counter + 1)}>
+        plus
+      </button>
+      <button onClick={() => setCounter(0)}>
+        zero
+      </button>
+    </div>
+  )
+}
+
+export default App
+```
 
 ### d A more complex state, debugging React apps
 
+```
+import { useState } from 'react'
 
+const App = () => {
+
+  const [ counter, setCounter ] = useState(0)
+
+  const increaseByOne = () => setCounter(counter + 1)
+  const setToZero = () => setCounter(0)
+
+  return (
+    <div>
+      <div>{counter}</div>
+      <button onClick={increaseByOne}>
+        plus
+      </button>
+      <button onClick={setToZero}>
+        zero
+      </button>
+    </div>
+  )
+}
+
+export default App
+```
+
+###### Passing state - to child components
+
+- "list the state up" in the component hierarchy (best practice) to their closest common ancestor.
+
+```
+import { useState } from 'react'
+
+const Display = (props) => {
+  return (
+    <div>{props.counter}</div>
+  )
+}
+
+const App = () => {
+
+  const [ counter, setCounter ] = useState(0)
+
+  const increaseByOne = () => setCounter(counter + 1)
+  const decreaseByOne = () => setCounter(counter - 1)
+  const setToZero = () => setCounter(0)
+
+  const Button = (props) => {
+    return (
+      <button onClick={props.onClick}>
+        {props.text}
+      </button>
+    )
+  }
+
+  return (
+    <div>
+      <Display counter={counter}/>
+      <Button 
+        onClick={increaseByOne}
+        text='plus'
+      />
+      <Button 
+        onClick={setToZero}
+        text='zero'
+      />
+      <Button
+        onClick={decreaseByOne}
+        text='minus'
+      />
+    </div>
+  )
+}
+
+export default App
+```
+
+###### Changes in state cause re-rendering
+###### Refactoring the components
+
+```
+import { useState } from 'react'
+
+const Display = ({counter}) => <div>{counter}</div>
+const App = () => {
+
+  const [ counter, setCounter ] = useState(0)
+
+  const increaseByOne = () => setCounter(counter + 1)
+  const decreaseByOne = () => setCounter(counter - 1)
+  const setToZero = () => setCounter(0)
+
+  const Button = ({onClick, text}) => <button onClick={onClick}>{text}</button>
+
+  return (
+    <div>
+      <Display counter={counter}/>
+      <Button 
+        onClick={increaseByOne}
+        text='plus'
+      />
+      <Button 
+        onClick={setToZero}
+        text='zero'
+      />
+      <Button
+        onClick={decreaseByOne}
+        text='minus'
+      />
+    </div>
+  )
+}
+
+export default App
+```
 
 ## [part 2 Communicating with server](https://fullstackopen.com/en/about)
+
+##### Complex State
+
+- "pieces of state"
+
+```
+const App = () => {
+  const [left, setLeft] = useState(0)
+  const [right, setRight] = useState(0)
+
+  return (
+    <div>
+      {left}
+      <button onClick={() => setLeft(left + 1)}>
+        left
+      </button>
+      <button onClick={() => setRight(right + 1)}>
+        right
+      </button>
+      {right}
+    </div>
+  )
+}
+```
+
+- It is forbidden in React to mutate state directly.
+##### Handling arrays
+
+```
+const App = () => {
+  const [left, setLeft] = useState(0)
+  const [right, setRight] = useState(0)
+
+  const [allClicks, setAll] = useState([])
+
+
+  const handleLeftClick = () => {
+    setAll(allClicks.concat('L'))
+    setLeft(left + 1)
+  }
+
+
+  const handleRightClick = () => {
+    setAll(allClicks.concat('R'))
+    setRight(right + 1)
+  }
+
+  return (
+    <div>
+      {left}
+      <button onClick={handleLeftClick}>left</button>
+      <button onClick={handleRightClick}>right</button>
+      {right}
+
+      <p>{allClicks.join(' ')}</p>
+    </div>
+  )
+}
+```
+###### Update of the state is asynchronous
+
+```
+const App = () => {
+  const [left, setLeft] = useState(0)
+  const [right, setRight] = useState(0)
+  const [allClicks, setAll] = useState([])
+
+  const [total, setTotal] = useState(0)
+
+  const handleLeftClick = () => {
+    setAll(allClicks.concat('L'))
+    setLeft(left + 1)
+
+    setTotal(left + right)
+  }
+
+  const handleRightClick = () => {
+    setAll(allClicks.concat('R'))
+    setRight(right + 1)
+
+    setTotal(left + right)
+  }
+
+  return (
+    <div>
+      {left}
+      <button onClick={handleLeftClick}>left</button>
+      <button onClick={handleRightClick}>right</button>
+      {right}
+      <p>{allClicks.join(' ')}</p>
+
+      <p>total {total}</p>
+    </div>
+  )
+}
+```
+
+- a state update in React happens asynchronously, i.e. not immediately but "at some point" before the component is rendered again.
+
+###### Conditional rendering
+
+```
+import { useState } from 'react'
+
+const History = (props) => {
+  if (props.allClicks.length === 0) {
+    return (
+      <div>
+        the app is used by pressing the buttons
+      </div>
+    )
+  }
+  return (
+    <div>
+      button press history: {props.allClicks.join(' ')}
+    </div>
+  )
+}
+const App = () => {
+  const [left, setLeft] = useState(0)
+  const [right, setRight] = useState(0)
+  const [allClicks, setAll] = useState([])
+  const [total, setTotal] = useState(0)
+
+  const handleLeftClick = () => {
+    setAll(allClicks.concat('L'))
+    const updatedLeft = left + 1
+    setLeft(updatedLeft)
+    setTotal(updatedLeft + right)
+  }
+
+  const handleRightClick = () => {
+    setAll(allClicks.concat('R'));
+    const updatedRight = right + 1;
+    setRight(updatedRight);
+    setTotal(left + updatedRight);
+  }
+
+  return (
+    <div>
+      {left}
+      <button onClick={handleLeftClick}>left</button>
+      <button onClick={handleRightClick}>right</button>
+      {right}
+      <History allClicks={allClicks}/>
+    </div>
+  )
+}
+
+export default App
+```
+
+###### Old React
+
+- state hook. Unavailable in older versions. Previous to that components that required state had to use class syntax.
+
+###### Debugging React applications
+
+- react developer tools extension for Chrome
+
+###### Rules of Hooks
+
+- hooks-based state functions
+- `useState` must not be called from within:
+  -  a loop
+  -  a conditional expression
+  -  anywhere not a function defining a component.
+-  This is because we have to have the hooks called in the same order.
+
+```
+const App = () => {
+  // these are ok
+  const [age, setAge] = useState(0)
+  const [name, setName] = useState('Juha Tauriainen')
+
+  if ( age > 10 ) {
+    // this does not work!
+    const [foobar, setFoobar] = useState(null)
+  }
+
+  for ( let i = 0; i < age; i++ ) {
+    // also this is not good
+    const [rightWay, setRightWay] = useState(false)
+  }
+
+  const notGood = () => {
+    // and this is also illegal
+    const [x, setX] = useState(-1000)
+  }
+
+  return (
+    //...
+  )
+}
+```
+
+#### What is useState? -> lsbot
+
+- useState is a ​Hook​ in React that allows you to add state to functional components. In Object-Oriented Programming, you're used to managing state with instance properties (e.g., this.name). In React's functional components, useState provides a similar capability.
+- When you call useState, it does two things:
+  1.  It creates a "state variable" to hold a value between function calls (renders).
+  2.  It gives you a function to update this value and trigger a re-render of your component.
+
+- How does it work?
+  - useState returns an array with exactly two elements, which you typically destructure:
+
+```
+import React, { useState } from 'react';
+
+function Counter() {
+  // 1. Call useState with the initial state value (e.g., 0).
+  // 2. Destructure the returned array into a state variable and a setter function.
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      {/* When the button is clicked, call the setter function to update state */}
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+```
+
+In this example:
+•   useState(0) initializes the state with 0.
+•   count is the state variable. Its initial value is 0.
+•   setCount is the function you use to update the count state.
+•   When setCount is called, React re-renders the Counter component, and the p tag will display the new count value.
+It's important to remember that you should never modify the state variable directly (e.g., count = count + 1). Always use the setter function provided by useState to ensure React knows to update the UI.
+
+************3:18 pm************************************************************
+
+###### Event Handling Revisited
+
+```
+const App = () => {
+  const [value, setValue] = useState(10)
+
+  const handleClick = () =>
+    console.log('clicked the button')
+
+  return (
+    <div>
+      {value}
+      <button onClick={handleClick}>button</button>
+    </div>
+  )
+}
+```
+###### A function that returns a function
+
+```
+const hello = (who) => () => {
+  console.log('hello', who)
+}
+```
+
+```
+const App = () => {
+  const [value, setValue] = useState(10)
+  
+
+  const setToValue = (newValue) => () => {
+    console.log('value now', newValue)  // print the new value to console
+    setValue(newValue)
+  }
+  
+  return (
+    <div>
+      {value}
+
+      <button onClick={setToValue(1000)}>thousand</button>
+      <button onClick={setToValue(0)}>reset</button>
+      <button onClick={setToValue(value + 1)}>increment</button>
+    </div>
+  )
+}
+```
+###### Passing Event Handlers to Child Components
+```
+const App = (props) => {
+  // ...
+  return (
+    <div>
+      {value}
+
+      <Button onClick={() => setToValue(1000)} text="thousand" />
+      <Button onClick={() => setToValue(0)} text="reset" />
+      <Button onClick={() => setToValue(value + 1)} text="increment" />
+    </div>
+  )
+}
+```
+###### Do Not Define Components Within Components
+
+- Never define components inside of other components (even thouhg they appear to work).
+
+```
+const Display = props => <div>{props.value}</div>
+
+const Button = (props) => (
+  <button onClick={props.onClick}>
+    {props.text}
+  </button>
+)
+
+const App = () => {
+  const [value, setValue] = useState(10)
+
+  const setToValue = newValue => {
+    console.log('value now', newValue)
+    setValue(newValue)
+  }
+
+  return (
+    <div>
+      <Display value={value} />
+      <Button onClick={() => setToValue(1000)} text="thousand" />
+      <Button onClick={() => setToValue(0)} text="reset" />
+      <Button onClick={() => setToValue(value + 1)} text="increment" />
+    </div>
+  )
+}
+```
+###### Utilization of Large language models
+
+- "Everyone knows that debugging is twice as hard as writing a program in the first place. SO if you're as clever as you can be when you write it, how will you ever debug it?" - Brian Kernighan.
+
+### exercises:
+1. 
 ## [part 3  - programming a server with NodeJS and Express](https://fullstackopen.com/en/part3)
 ## [part 5 - Testing React Apps](https://fullstackopen.com/en/part5)
 ## [Part 7: React Router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
@@ -409,3 +914,4 @@ Important articles to read after you finish the course:
 - useCallback Hook
 - useEffect Hook
 Added by
+  
