@@ -1237,7 +1237,8 @@ export default App
 
 1.13 : step 2:
 
-```import { useState } from 'react'
+```
+import { useState } from 'react'
 
 const App = () => {
   const anecdotes = [
@@ -1250,19 +1251,75 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
-
-  const votes = Array.from({length: anectodes.length}, 0) 
+  const [votes, setVotes] = useState(Array.from({length: anecdotes.length}, () => 0))
   const [selected, setSelected] = useState(0)
-  const newIndex = () => setSelected(Math.round(Math.random() * (anecdotes.length - 1)))
-  const upvote = () => {console.log(votes)}
+
+  const DisplayVotes = ({votes}) => <div votes={votes}>has {votes[selected]} votes</div>
+
+  const randomIndex = () => Math.round(Math.random() * (anecdotes.length - 1))
+  const handleClick = () => setSelected(randomIndex())
+  const upVote = () => {
+    const copyVotes = [...votes]
+    copyVotes[selected] += 1
+    setVotes(copyVotes)
+  }
 
   return (
     <>
       {anecdotes[selected]}
-      <div>has {votes}votes</div>
+      <DisplayVotes votes={votes}></DisplayVotes>
       <br></br>
-      <button onClick={upvote}>vote</button>
-      <button onClick={newIndex}>next anecdote</button>
+      <button onClick={upVote}>vote</button>
+      <button onClick={handleClick}>Click for another</button>
+    </>
+  )
+}
+
+export default App
+```
+
+1.14: anecdotes step 3:
+
+```
+import { useState } from 'react'
+
+const App = () => {
+  const anecdotes = [
+    'If it hurts, do it more often.',
+    'Adding manpower to a late software project makes it later!',
+    'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    'Premature optimization is the root of all evil.',
+    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+    'The only way to go fast, is to go well.'
+  ]
+  const [votes, setVotes] = useState(Array.from({length: anecdotes.length}, () => 0))
+  const [selected, setSelected] = useState(0)
+  const [mostVoted, setMostVoted] = useState(0)
+
+  const DisplayVotes = ({votes}) => <div votes={votes}>has {votes[selected]} votes</div>
+
+  const randomIndex = () => Math.round(Math.random() * (anecdotes.length - 1))
+  const handleClick = () => setSelected(randomIndex())
+  const upVote = () => {
+    const copyVotes = [...votes]
+    copyVotes[selected] += 1
+    setMostVoted(votes.indexOf((Math.max(...votes))))
+    setVotes(copyVotes)
+  }
+
+  return (
+    <>
+      <h1>Anecdote of the day</h1>
+      {anecdotes[selected]}
+      <DisplayVotes votes={votes}></DisplayVotes>
+      <br></br>
+      <button onClick={upVote}>vote</button>
+      <button onClick={handleClick}>Click for another</button>
+      <br></br>
+      <h1>Anecdote with the most votes</h1>
+      {anecdotes[mostVoted]}
     </>
   )
 }
