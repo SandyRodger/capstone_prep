@@ -1328,6 +1328,46 @@ export default App
 ```
 
 ## [part 3  - programming a server with NodeJS and Express](https://fullstackopen.com/en/part3)
+
+### a
+
+- run file as an npm script with `npm start`
+- `npm test` except we don't have any tests right now.
+
+- "These days, code that runs in the browser uses ES6 modules"
+#### Simple web server
+
+```index.js
+const http = require('http')
+
+const app = http.createServer((request, response) => {
+  response.writeHead(200, { 'Content-Type': 'text/plain' })
+  response.end('Hello World')
+})
+
+const PORT = 3001
+app.listen(PORT)
+console.log(`Server running on port ${PORT}`)
+```
+
+#### Express
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## [part 5 - Testing React Apps](https://fullstackopen.com/en/part5)
 ## [Part 7: React Router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
 ## part 7a
