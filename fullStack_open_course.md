@@ -1352,22 +1352,156 @@ console.log(`Server running on port ${PORT}`)
 
 #### Express
 
+- We could implement the server on Node's built-in http web-server, but it's cumbersome. SO lots of libraries have been built to work with it. The most popular is Express.
+
+`npm install express`
+
+- the contents of the new `node_modules` directory are a list of all the new dependencies of the Express library. These are called the "transitive dependencies"
+
+- the carent in: `"express": "^4.21.2"` is "semantic versioning" which means if and when the dependencies are updated the version of Express will be at least this version. THe first number will always be the same, but the last 2 might change.
+
+- update dependencies with `npm update`
+- install dependencies (like on another computer) with `npm install`
+- newer versions of Express should be backwards compatible. So version `4.99.175` might work, but version `5.0.0` wouldn't.
+
+#### Web and express
+
+```
+const express = require('express')
+const app = express()
+
+let notes = [
+  ...
+]
+
+app.get('/', (request, response) => {
+  response.send('<h1>Hello World!</h1>')
+})
+
+app.get('/api/notes', (request, response) => {
+  response.json(notes)
+})
+
+const PORT = 3001
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
+```
+- then restart (control c, node index.js)
+- BUG -> I couldn't get my console to look like theirs:
+  - I wasn't at the right url path
+  - I didn't have the notes const in my file (their tutorial condensed that part)
+  - then went to dev tools Network, clicked on `notes` and the panel reflected what it should have.
+
+#### Automatic Change Tracking
+
+- make the server track our changes with `node --watch index.js`
+  - so we don't have to stop and reload our program each time
+  - although you still have to reload the browser. That would be 'hot reload'ing and unlike React it's not possible here.
+- change package.json to
+```
+{
+  // ..
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  // ..
+}
+```
+- and restart server with `npm run dev`
+#### REST
+
+- What REST is:
+  - A style for building web APIs around resources (nouns)
+  -  accessed over HTTP with standard methods.
+  -  Keep servers stateless
+  -  and use standard representations (usually JSON).
+
+#### Fetching a single resource
+
+- define parameters with colon syntax:
+
+```index.js
+app.get('/api/notes/:id', (request, response) => {
+  const id = request.params.id
+  const note = notes.find(note => note.id === id)
+  response.json(note)
+})
+```
+
+- problem now is that the server responds with `200 OK` even if the param doesn't exist.
+- make the following change :
+
+```index.js
+app.get('/api/notes/:id', (request, response) => {
+  const id = request.params.id
+  const note = notes.find(note => note.id === id)
+  
+
+  if (note) {
+    response.json(note)
+  } else {
+    response.status(404).end()
+  }
+})
+```
+
+#### Deleting resources
+
+```
+app.delete('/api/notes/:id', (request, response) => {
+  const id = request.params.id
+  notes = notes.filter(note => note.id !== id)
+
+  response.status(204).end()
+})
+```
+
+#### Postman
+
+#### The Visual Studio Code REST client
+- an alternative to Postman, so I'll skip.
+- ok later I installed it.
+- create `create_notes.rest`:
+```
+POST http"//localhost:3001/api/notes
+Content-Type: application/json
+
+{
+  "content": "VS code rest client is a pre...",
+  "important": true
+}
+```
+
+<img width="1440" height="900" alt="Screenshot 2025-08-12 at 13 22 37" src="https://github.com/user-attachments/assets/e848805a-e1bf-4235-a749-ea19e680b5be" />
+
+- One way the REST client is better than POSTMAN is you can save all your requests in the root of the project and they can be available to all of your team-mates
+#### The WebStorm HTTP Client
+- skip
+#### Receiving data
+
+- POST requests
+- The Express json-parser : `app.use(express.json())`
+
+```
+const express = require('express')
+const app = express()
 
 
+app.use(express.json())
+
+//...
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+app.post('/api/notes', (request, response) => {
+  const note = request.body
+  console.log(note)
+  response.json(note)
+})
+```
+- a potential bug is that the `content-type` header is misassigned. In which case the server can appear to only recieve an empty object.
 ## [part 5 - Testing React Apps](https://fullstackopen.com/en/part5)
 ## [Part 7: React Router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
 ## part 7a
