@@ -1502,6 +1502,61 @@ app.post('/api/notes', (request, response) => {
 })
 ```
 - a potential bug is that the `content-type` header is misassigned. In which case the server can appear to only recieve an empty object.
+
+###### important sidenote
+
+- sometimes whern debugging you can find out what headers have been set in the HTTP request by using the get method of the request object. The `request` also has the headers property which contains all of the headers of a specific request
+- If you leave a blank line between the top row and the row with the HTTP headers, i will be interpreted that there are not headers which caused a bug.
+- You can spot the missing Content-Type header by doing `console.log(request.headers)` in your code. 
+
+#### finalizing handling of request
+
+```
+app.post('/api/notes', (request, response) => {
+  const maxId = notes.length > 0
+    ? Math.max(...notes.map(n => Number(n.id))) 
+    : 0
+
+  const note = request.body
+  note.id = String(maxId + 1)
+
+  notes = notes.concat(note)
+
+  response.json(note)
+})
+```
+
+```
+const generateId = () => {
+  const maxId = notes.length > 0
+    ? Math.max(...notes.map(n => Number(n.id)))
+    : 0
+  return String(maxId + 1)
+}
+
+app.post('/api/notes', (request, response) => {
+  const body = request.body
+
+  if (!body.content) {
+    return response.status(400).json({ 
+      error: 'content missing' 
+    })
+  }
+
+  const note = {
+    content: body.content,
+    important: body.important || false,
+    id: generateId(),
+  }
+
+  notes = notes.concat(note)
+
+  response.json(note)
+})
+```
+
+
+
 ## [part 5 - Testing React Apps](https://fullstackopen.com/en/part5)
 ## [Part 7: React Router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
 ## part 7a
