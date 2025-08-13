@@ -1463,7 +1463,7 @@ app.delete('/api/notes/:id', (request, response) => {
 
 #### The Visual Studio Code REST client
 - an alternative to Postman, so I'll skip.
-- ok later I installed it.
+- ok later I installed it. (It's an extension in VSCode).
 - create `create_notes.rest`:
 ```
 POST http"//localhost:3001/api/notes
@@ -1555,7 +1555,329 @@ app.post('/api/notes', (request, response) => {
 })
 ```
 
+### Exercises:
 
+###### 3.1
+
+- `npm init`
+- no changes to the input prompts
+-  add "start": "node index.js" to the scripts block in my `package.json`
+- `code .gitignore` with `node_modules` in line 1.
+- change `index.js` to :
+```
+const http = require('http')
+
+let contacts = [
+    { 
+      "id": "1",
+      "name": "Arto Hellas", 
+      "number": "040-123456"
+    },
+    { 
+      "id": "2",
+      "name": "Ada Lovelace", 
+      "number": "39-44-5323523"
+    },
+    { 
+      "id": "3",
+      "name": "Dan Abramov", 
+      "number": "12-43-234345"
+    },
+    { 
+      "id": "4",
+      "name": "Mary Poppendieck", 
+      "number": "39-23-6423122"
+    }
+]
+
+const app = http.createServer((request, response) => {
+  response.writeHead(200, { 'Content-Type': 'application/json' })
+  response.end(JSON.stringify(contacts))
+})
+
+const PORT = 3001
+app.listen(PORT)
+console.log(`server running on port ${PORT}`)
+```
+
+- `npm install express`
+- `npm update`
+- start with `node --watch index.js` so that changes are 
+
+###### 3.2
+
+```
+const express = require('express')
+const app = express()
+
+let persons = [
+    { 
+      "id": "1",
+      "name": "Arto Hellas", 
+      "number": "040-123456"
+    },
+    { 
+      "id": "2",
+      "name": "Ada Lovelace", 
+      "number": "39-44-5323523"
+    },
+    { 
+      "id": "3",
+      "name": "Dan Abramov", 
+      "number": "12-43-234345"
+    },
+    { 
+      "id": "4",
+      "name": "Mary Poppendieck", 
+      "number": "39-23-6423122"
+    }
+]
+
+app.get('/', (request, response) => {
+  response.send(`<h1>Hello World!</h1>`)
+})
+
+app.get('/api/persons', (request, response) => {
+  response.json(persons)
+})
+
+app.get('/info', (request, response) => {
+  const time = new Date()
+  response.send(`
+    <div>Phonebook has info for ${persons.length} people</div>
+    <div>${time}</div>
+    `)
+})
+
+const PORT = 3001
+app.listen(PORT, () => {
+  console.log(`server running on port ${PORT}`)
+})
+```
+
+###### 3.3
+
+```
+const express = require('express')
+const app = express()
+
+let persons = [
+  { 
+    "id": "1",
+    "name": "Arto Hellas", 
+    "number": "040-123456"
+  },
+  { 
+    "id": "2",
+    "name": "Ada Lovelace", 
+    "number": "39-44-5323523"
+  },
+  { 
+    "id": "3",
+    "name": "Dan Abramov", 
+    "number": "12-43-234345"
+  },
+  { 
+    "id": "4",
+    "name": "Mary Poppendieck", 
+    "number": "39-23-6423122"
+  }
+]
+
+app.get('/', (request, response) => {
+  response.send(`<h1>Hello World!</h1>`)
+})
+
+app.get('/api/persons', (request, response) => {
+  response.json(persons)
+})
+
+app.get('/info', (request, response) => {
+  const time = new Date()
+  response.send(`
+    <div>Phonebook has info for ${persons.length} people</div>
+    <div>${time}</div>
+    `)
+})
+
+app.get('/api/persons/:id', (request, response) => {
+  const id = request.params.id
+  const person = persons.find(person => person.id === id)
+
+  if (person) {
+    response.json(person)
+  } else {
+    response.status(404).end()
+  }
+
+  response.json(person)
+})
+
+const PORT = 3001
+app.listen(PORT, () => {
+  console.log(`server running on port ${PORT}`)
+})
+```
+
+###### 3.4
+
+```
+const express = require('express')
+const app = express()
+
+let persons = [
+  { 
+    "id": "1",
+    "name": "Arto Hellas", 
+    "number": "040-123456"
+  },
+  { 
+    "id": "2",
+    "name": "Ada Lovelace", 
+    "number": "39-44-5323523"
+  },
+  { 
+    "id": "3",
+    "name": "Dan Abramov", 
+    "number": "12-43-234345"
+  },
+  { 
+    "id": "4",
+    "name": "Mary Poppendieck", 
+    "number": "39-23-6423122"
+  }
+]
+
+app.get('/', (request, response) => {
+  response.send(`<h1>Hello World!</h1>`)
+})
+
+app.get('/api/persons', (request, response) => {
+  response.json(persons)
+})
+
+app.get('/info', (request, response) => {
+  const time = new Date()
+  response.send(`
+    <div>Phonebook has info for ${persons.length} people</div>
+    <div>${time}</div>
+    `)
+})
+
+app.get('/api/persons/:id', (request, response) => {
+  const id = request.params.id
+  const person = persons.find(person => person.id === id)
+
+  if (person) {
+    response.json(person)
+  } else {
+    response.status(404).end()
+  }
+
+  response.json(person)
+})
+
+app.delete('/api/persons/:id', (request, response) => {
+  const id = request.params.id
+  persons = persons.filter(note => note.id !== id)
+
+  response.status(204).end()
+})
+
+const PORT = 3001
+app.listen(PORT, () => {
+  console.log(`server running on port ${PORT}`)
+})
+```
+
+##### 3.5
+
+- (I thought I might have to use the REST extention and create a requests folder, but in the end no.)
+```
+app.post('/api/persons', (request, response) => {
+
+  if (!request.body) {
+    return response.status(400).json({
+      error: 'content missing'
+    })
+  }
+
+  const person = {
+    content: request.body,
+    important: request.body.important || false,
+    id: String(Math.floor(Math.random() * 1000000))
+  }
+
+  response.json(person)
+})
+```
+##### 3.6
+
+```
+  if (!request.body.name) {
+    return response.status(400).json({
+      error: 'name missing'
+    })
+  } else if (!request.body.number) {
+      return response.status(400).json({
+      error: 'number missing'
+  })
+  } else if ((persons.filter(p => p.name ===request.body.name)).length) {
+    return response.status(400).json({
+    error: `name must be unique`
+  })
+}
+```
+
+### About HTTP request types
+
+- requests should be "safe"
+  - no side-effects
+- all HTTP requests apart from POST should be idempotent.
+
+### Middleware
+
+- like the json-parser we used earlier. It takes the raw data from the request, parses it into an object and assigns it to the request object as a new body.
+- Wyen you have multiple middlewares they are executed successively in the order they're written in the application code.
+- We will now implemenet a middleware that prints information about every request sent to the server.
+
+```
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method)
+  console.log('Path:  ', request.path)
+  console.log('Body:  ', request.body)
+  console.log('---')
+  next()
+}
+```
+
+```
+app.use(requestLogger)
+```
+
+```
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
+```
+
+###### 3.7
+
+`npm install morgan`
+`const morgan = require('morgan')
+`app.use(morgan('tiny'))`
+
+###### 3.8
+
+```
+morgan.token('body', (req) => {
+  return JSON.stringify(req.body)
+})
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+```
 
 ## [part 5 - Testing React Apps](https://fullstackopen.com/en/part5)
 ## [Part 7: React Router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
