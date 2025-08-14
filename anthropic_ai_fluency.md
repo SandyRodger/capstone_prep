@@ -250,12 +250,38 @@ Common successful patterns include providing clear task overviews, format specif
 - maintain a spirit of experimentation and adapt your approach based on your results.
 ###  Effective prompting techniques
 ### Discernment
+- what you need
 ###  A closer look at Discernment
+- process discernment
+- How well it's doing the task and how well it's interacting with you.
+- Too brief Too many questions? Too verbose?
+- skip the 60 minute exercise
 ### The Description-Discernment loop
 ###  The Description-Discernment loop
 ### Diligence
 ###  A closer look at Diligence
+
+- not only productive, but also rigerous, transparent and accountable.
+- creation diligence.
+- Transparency diligence
+- "Who needs to know about AI's role in this"
+- not just about following laws, also about maintaining legal
+- Deployment diligence
+- Different contexts/stakeholders may have different standards, so it's good to know what your personal standards are.
+
+Exercise:
+- creating a diligence statement:
+
+```
+A diligence statement is a transparent acknowledgment of AI's role in your work, along with your commitment to responsibility for the final output. Here's an example:
+
+"In creating this [document/project/content], I collaborated with [AI assistant name] to assist with [specific tasks: drafting, research, editing, etc.]. I affirm that all AI-generated and co-created content underwent thorough review and evaluation. The final output accurately reflects my understanding, expertise, and intended meaning. While AI assistance was instrumental in the process, I maintain full responsibility for the content, its accuracy, and its presentation. This disclosure is made in the spirit of transparency and to acknowledge the role of AI in the creation process.
+```
+
 ### Conclusion & certificate
 ###  Conclusion
 ###  Certificate of completion
 ### 
+
+
+<img width="451" height="688" alt="image" src="https://github.com/user-attachments/assets/54403fdc-ac79-426a-a16c-ca75eb164da2" />
