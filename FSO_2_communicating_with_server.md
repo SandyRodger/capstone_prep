@@ -345,10 +345,82 @@ export default Courses
 ```
 
 ## [b => Forms](https://fullstackopen.com/en/part2/forms)
+
+- recreate project from part a, because I wrote over it:
+  - `npm create vite@latest 02b_forms -- --template react` in `/Users/sandyboy/Desktop/capstone_prep/01_fullstack_open_course`
+  - `npm install`
+  - `npm run dev`
+
+  - hmmm, why does my directory lack files that are in the model directory (https://github.com/fullstack-hy2020/part2-notes-frontend/tree/part2-1)
+    - I will copy them in:
+      - `vite.config.js`
+      - `package.json`
+      - `package-lock.json`
+      - `index.html`
+      - `eslint.config.js`
+      - `README.md`
+      - `.gitignore`
+- remove:
+  - `App.css`
+  - `index.css`
+  - `assets` directory
+- That was a ball-ache-> next time just pull the directory
+
 ### Saving the notes in the component state
 - more `useState()`
+- Add a form:
+
+```
+  const addNote = (event) => {
+    event.preventDefault()
+    console.log('button clicked', event.target)
+  }
+```
+
+```
+  <form onSubmit={addNote}>
+    <input />
+    <button type="submit">save</button>
+  </form>
+```
 ### Controlled component
-- skim...
+
+- How to access the data in the input element
+
+```
+  const [newNote, setNewNote] = useState(
+    'a new note...'
+  )
+```
+
+- we use the `onChange` event meaning it registers every time there is a change in the input
+```
+<input
+  value={newNote}
+  onChange={handleNoteChange}
+/>
+```
+
+- Add React dev tools (Which i was meant to already have done, somehow)
+  - https://react.dev/learn/preserving-and-resetting-state#option-2-resetting-state-with-a-key
+  - Then you need to run the page with `npm run dev` otherwise it won't appear.
+- update `newNote` so it reflects the current value of the input
+
+```
+const addNote = (event) => {
+  event.preventDefault()
+  const noteObject = {
+    content: newNote,
+    important: Math.random() < 0.5,
+    id: String(notes.length + 1),
+  }
+
+  setNotes(notes.concat(noteObject))
+  setNewNote('')
+}
+```
+!!!!!!!!!!!!!!!!!!!!!!!!!pausing here, to have a look at other aspects of prep Course. !!!!!!!!!!!!!!!!!!!!!!!!!
+
 ### Filtering Displayed Elements
 ### exercises
 #### 2.6
