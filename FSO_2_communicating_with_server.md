@@ -1,5 +1,11 @@
 # [Full stack open course]([https://fullstackopen.com/en/](https://fullstackopen.com/en/part2))
 
+### code for staring a new project
+
+- `npm create vite@latest 02_exercises -- --template react` in an empty directory
+- `npm install`
+- `npm run dev`
+
 ## [a => Rendering a collection, modules](https://fullstackopen.com/en/part2/rendering_a_collection_modules)
 ### console.log
 - experienced developers use it 10x more.
@@ -419,15 +425,35 @@ const addNote = (event) => {
   setNewNote('')
 }
 ```
-!!!!!!!!!!!!!!!!!!!!!!!!!pausing here, to have a look at other aspects of prep Course. !!!!!!!!!!!!!!!!!!!!!!!!!
+- we must never mutate state directly in React!
 
 ### Filtering Displayed Elements
+
+- Only display the important notes
+
+`  const [showAll, setShowAll] = useState(true) `
+
+```
+  const notesToShow = showAll
+    ? notes
+    : notes.filter(note.important === true)
+```
 ### exercises
 #### 2.6
+- that took too long
 #### 2.7
+```
+    if (persons.filter(p => p.name === newName).length !== 0) {
+      alert(`${newName} is already in the phonebook`)
+      return
+    }
+```
 #### 2.8
+- tick
 #### 2.9
+
 #### 2.10
+- needed a little chatGPT help there, but I think I got it. Turns out you have to pass teh data and the handler to the component in its file. It should be dumb, and not do any data processing though.
 ## [c => Getting data from server](https://fullstackopen.com/en/part2/getting_data_from_server)
 ### The browser as a runtime environment
 ### npm
