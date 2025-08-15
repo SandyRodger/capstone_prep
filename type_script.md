@@ -161,6 +161,35 @@ export default App;
 
 - iterate over the peoplea array and render the cards
 - copy css styles from `https://github.com/harblaith7/React-With-TypeScript-Crash-Course/blob/main/src/App.css`
-- 
+- [34:10] write a function
+```
+  const renderList = ()=> {
+    return people.map((person)=> {
+      <li className="list">
+        <div className="List-header">
+          <img className="List-img" src={person.url}/>
+          <h2>{person.name}</h2>
+        </div>
+        <p>{person.age} years old</p>
+        <p className="List-note">{person.note}</p>
+      </li>
+    })
+  }
+```
+- [39:40] bug: my program thinks the `renderList` function should return a `JSX.Element[]`, but when I stipulate that it can;t find the JSX namespace. So I'm leaving it out.
 
 - [40:36] Handling events
+- add a form to input new cards
+- buf -> css not rendering:
+  - one of my classes had a lowercase L : should have been `          <div className="List-header">`
+- [41:00]
+  - create `addToList` component.
+  - If you use the element it will auto-import -> no it won't.
+- [51:30] bug -> it doesn;t like it for the final textarea type. Solve with unary type HTMLTextAreaElement.
+- [52:50] Next step -> create a button.
+- handleClick
+- [55:00] Define props interface
+  - `import { IState as IProps } from "../App"`
+- [59:40] -> `React.FC<IProps>` I am a little overwhelmed
+- [01:00] "let's complete this application..."
+  - `handleClick` function
