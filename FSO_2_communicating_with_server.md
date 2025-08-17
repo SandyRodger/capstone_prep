@@ -454,27 +454,274 @@ const addNote = (event) => {
 
 #### 2.10
 - needed a little chatGPT help there, but I think I got it. Turns out you have to pass teh data and the handler to the component in its file. It should be dumb, and not do any data processing though.
+
 ## [c => Getting data from server](https://fullstackopen.com/en/part2/getting_data_from_server)
+
+- A tool meant to be used during the software development, JSON server.
+- `npx json-server --port 3001 db.json`
+- now saves al changes on the server to make the noes persist in memory
+- All is saved to the `db.json` file
 ### The browser as a runtime environment
+- Task: fetch the existing notes to our React application from the address `http://localhost:3001/notes`
+- Instead of HTTP requests we are going to fetch with promises
+- Then a long explanation of ansynchronous javascript, which i know about.
 ### npm
+- instead of `fetch` we will be using `axios`, which is like fetch, but nicer.
+- `package.json` -> dependencies
+- `npm install axios`
+- `npm install json-server --save-dev`
+  - this is a development dependency and so only used during development.
+- add `    "server": "json-server -p 3001 db.json"` to the 'scripts' section of `package.json`
+- now we can `npm run server`
 ### Axios and promises
+
+- add to `main.jsx`:
+```
+import axios from 'axios'
+
+const promise = axios.get('http://localhost:3001/notes')
+console.log(promise)
+
+const promise2 = axios.get('http://localhost:3001/foobar')
+console.log(promise2)
+```
+- explains async get methods...
+
+```
+axios
+  .get('http://localhost:3001/notes')
+  .then(response => {
+    const notes = response.data
+    console.log(notes)
+  })
+```
+
 ### Effect-hooks
+
+- as opposed to state hooks
+- BUG -> why aren't the console.logs printing?
+  - because you are running the server and the react app seperately.
+  - `npx json-server --port 3001 db.json` runs the server on port 3000
+  - `npm run dev` runs your react app -> this is where the console.logs will be.
+
 ### The development runtime environment
+
+- yup
+
 ### Exercises
 #### 2.11
+
+`npx json-server --port 3001 db.json`
+`npm install axios`
+`npm install json-server --save-dev`
+add this to package.json -> `    "server": "json-server -p 3001 db.json"`
+now start server with `npm run server`
+
+```App.jsx
+import { useState, useMemo, useEffect } from 'react'
+import axios from 'axios'
+import Numbers from './components/Numbers'
+import Filter from './components/Filter'
+
+const App = () => {
+  const [persons, setPersons] = useState([])
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
+  const [searchString, setSearchString] = useState('')
+
+  const hook = () => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        setPersons(response.data)
+      }
+    )
+  }
+
+  useEffect(hook, [])
+
+  const addName = (e) => {
+    e.preventDefault()
+
+    if (persons.some(p => p.name == newName)) {
+      alert(`${newName} is already in the phonebook`);
+      return;
+    }
+
+    const personObject = {
+      name: newName,
+      number: newNumber,
+      id: String(persons.length + 1),
+    };
+
+    setPersons(prev => prev.concat(personObject));
+    setNewName('')
+    setNewNumber('');
+  }
+
+  const handleNameChange = (e) => setNewName(e.target.value);
+  const handleNumberChange = (e) => setNewNumber(e.target.value)
+  const handleSearchChange = (e) => setSearchString(e.target.value)
+  const filteredPersons = useMemo(() => {
+    if (!searchString) return persons;
+    const regex = new RegExp(searchString, "i");
+    return persons.filter(p => regex.test(p.name))
+  }, [persons, searchString]);
+
+  return (
+    <div>
+      <h2>Phonebook</h2>
+      <Filter searchString={searchString} onChange={handleSearchChange} />
+
+      <h2>add a new</h2>
+      <form onSubmit={addName}>
+        <div>
+          name: 
+          <input 
+            value={newName}
+            onChange={handleNameChange}
+          />
+        </div>
+        <div>number:
+          <input 
+            value={newNumber}
+            onChange={handleNumberChange}
+          />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+      <h2>Numbers</h2>
+      <Numbers persons={filteredPersons}/>
+    </div>
+  )
+}
+
+export default App
+```
+
+```main.jsx
+import ReactDOM from "react-dom/client";
+import App from "./App";
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+```
+
 ## [d => Alternating data in server](https://fullstackopen.com/en/part2/altering_data_in_server)
+
+move to correct directory:
+  - `npm run server`
+  - `npm run dev`
+
+- yep
 ### REST
+- yep
+- json server requires all data to be sent in json format
+  - requests must contain `content-type` headr with value `application/json`
+
 ### Sending Data to the Server
+
+```
+  event.preventDefault()
+  const noteObject = {
+    content: newNote,
+    important: Math.random() < 0.5,
+  }
+
+  axios
+    .post('http://localhost:3001/notes', noteObject)
+    .then(response => {
+      console.log(response)
+    })
+}
+```
+
+- monitor the DB server to make sure what you're adding is being added: `http://localhost:3001/notes`
+
 ### Changing the Importance of Notes
+```
+const Note = ({ note, toggleImportance }) => {
+  const label = note.important
+    ? 'make not important' : 'make important'
+
+  return (
+    <li>
+      {note.content} 
+      <button onClick={toggleImportance}>{label}</button>
+    </li>
+  )
+}
+```
+
+```
+  const toggleImportanceOf = (id) => {
+    const url = `http://localhost:3001/notes/${id}`
+    const note = notes.find(n => n.id === id)
+    const changedNote = { ...note, important: !note.important}
+
+    axios.put(url, changedNote).then(response => {
+      setNotes(notes.map(note => note.id === id ? response.data : note))
+    })
+  }
+```
+
 ### Extracting Communication with the Backend into a Separate Module
+
+- `src/components/services`
+
 ### Cleaner Syntax for Defining Object Literals
+- this is just consise method syntax
 ### Promises and Errors
+
+- skim for now
+
 ### Full stack developer's oath
+
 ### Exercises
 #### 2.12
+
+```./components/Persons.js
+import axios from 'axios'
+const baseUrl = 'http://localhost:3001/persons'
+
+const getAll = () => {
+  const request = axios.get(baseUrl)
+  return request.then(response => response.data)
+}
+
+const create = newObject => {
+  const request = axios.post(baseUrl, newObject)
+  return request.then(response => response.data)
+}
+
+export default { getAll, create }
+```
+
 #### 2.13
+- accomplished above
 #### 2.14
+- done
 #### 2.15
+- got a little muddled with returning promises without async, used chatGPT to straighten it out:
+
+```
+if (!window.confirm(`Replace number for ${newName}?`)) return
+const id = persons.filter(p => p.name === newName)[0].id
+personService.singleEntry(id)
+  .then(currentEntry => {
+    if (!currentEntry) throw new Error(`no entry for ${id}`)
+    const changedPerson = { ...currentEntry, number: newNumber}
+    return personService.update(id, changedPerson);
+  })
+  .then(updated => {
+    setPersons(prev => prev.map(p => p.id === id ? updated : p))
+    setNewName('')
+    setNewNumber('')
+  })
+  .catch(console.error);
+```
+
 ## [e => Adding styles to React app](https://fullstackopen.com/en/part2/adding_styles_to_react_app)
 ### Improved error message
 ### Inline styles
