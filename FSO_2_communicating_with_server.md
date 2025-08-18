@@ -759,12 +759,44 @@ const Notification = ({ message }) => {
 export default Notification
 ```
 ### Inline styles
-  
+```
+{
+  color: 'green',
+  fontStyle: 'italic'
+}
+```
+- unlike a `.css` file, inline uses quotes around the values.
+- unlike normal javascript, inline css is preferred in react apps because the logical breakdown puts units of code in components, like this:
+
+```
+const Footer = () => {
+  const footerStyle = {
+    color: 'green',
+    fontStyle: 'italic'
+  }
+
+  return (
+    <div style={footerStyle}>
+      <br />
+      <p>
+        Note app, Department of Computer Science, University of Helsinki 2025
+      </p>
+    </div>
+  )
+}
+
+export default Footer
+```
+
 ### Exercises
 #### 2.16
+- yep
 #### 2.17
+- yep
 ### Couple of important remarks
+- setting the initial state of notes to `null` breaks everything, because in the initial render we are trying to map null.
 ### Exercises
+- skip these for now
 #### 2.18
 #### 2.19
 #### 2.20
