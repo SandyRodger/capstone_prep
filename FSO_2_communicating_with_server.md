@@ -723,8 +723,43 @@ personService.singleEntry(id)
 ```
 
 ## [e => Adding styles to React app](https://fullstackopen.com/en/part2/adding_styles_to_react_app)
+
+```index.css
+h1 {
+  color: green;
+  font-style: italic;
+}
+
+li {
+  color: grey;
+  padding-top: 3px;
+  font-size: 15px;
+}
+
+.note {
+  color: grey;
+  padding-top: 5pm;
+  font-size: 15px;
+}
+```
 ### Improved error message
+```Notification.jsx
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className='error'>
+      {message}
+    </div>
+  )
+}
+
+export default Notification
+```
 ### Inline styles
+  
 ### Exercises
 #### 2.16
 #### 2.17
