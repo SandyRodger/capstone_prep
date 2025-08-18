@@ -205,11 +205,46 @@
 - ... capacity reservations
 
 ### Section 6 - EC2 solutions Architect Associate Level
-#### 47
-#### 48
-#### 49
-#### 50
-#### 51
+
+#### [47 Private v public v elastic IP](https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/learn/lecture/13528052#lecture-article)
+
+- in this course we use IPv4
+- public IP means the machine can be found on the internet
+- private IP -> the machine can only be identified on the private network
+- private network amchines only access the internes through a proxy (NAT device?)
+- elastic IP is
+  - limited to 5 on your account
+  - avoid using them
+  - instead use a random public IP and regiser a DNS name to it
+  - or use a load balancer
+- if your machine is stpped and started the public IP can change
+#### 48 Private vs Public vs Elastic IP Hands On
+- stop instance
+- copy and paste IP address
+- start instance (different from rebooting instance)
+- new IPv4. So you can't ssh into the old ip
+- We need to solve this problem, because sometimes we want the ip not to change
+- We use a elastic IP address.
+- These cost a little more. There are instructions for avoiding charges.
+- actions -> associate IP address
+  - instance
+  - private IP address
+#### [49 EC2 Placement Groups](https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/learn/lecture/13528080#content)
+
+- cluster placement groups
+- placement groups spread
+- placement group partitions
+
+#### [50 EC2 Placement Groups - hands on](https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/learn/lecture/26118770#content)
+
+- create placement group
+  - placement strategy (4)
+  - launch instance
+  - advanced details -> setting -> 
+
+#### [51 Elastic Network Interfaces (ENI)](https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/learn/lecture/18077955#content)
+
+
 #### 52
 #### 53
 #### 54
