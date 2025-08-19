@@ -244,172 +244,195 @@
 
 #### [51 Elastic Network Interfaces (ENI)](https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/learn/lecture/18077955#content)
 
+- overview
 
-#### 52
-#### 53
-#### 54
-#### 55
+#### [52 ENI hands on](https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/learn/lecture/26118774#content)
+
+#### [53 ENI extra reading](https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/learn/lecture/20680996#content)
+
+#### [54 EC2 hibernate](https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/learn/lecture/18104377#content)
+- whatever was in ram will be preserved.
+- supports many instance families
+#### 55 [EC2 hibernate hands on](https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/learn/lecture/18105183#content)
+- `uptime`
+- hibernate instance
 ### Section 7 - EC2 Instance Storage
-#### 56
-#### 57
-#### 58
+#### [56 EBS volumes](https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/learn/lecture/26098272#content)
+
+- Elastic block store
+- like a usb stick/network drive, but not a physical one
+- delete on dermination attribute
+#### [57 EBS hands on](https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/learn/lecture/26098274#content)
+
+
+#### [58 EBS snapshots](https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/learn/lecture/26098276#content)
+
 #### 59
 #### 60
-#### 61
-#### 62
-#### 63
-#### 64
-#### 65
-#### 66
-#### 67
-#### 68
-#### 69
-### Section 8 - High availablity and scalability: ELB & ASG
-#### 70
-#### 71
-#### 72
-#### 73
-#### 74
-#### 75
-#### 76
-#### 77
-#### 78
-#### 79
-#### 80
-#### 81
-#### 82
-#### 83
-#### 84
-#### 85
-#### 86
-#### 87
-### Section 9 - AWS Fundamentals: RDS + Aurora + ElastiCache
-#### 88
-#### 89
-#### 90
-#### 91
-#### 92
-#### 93
-#### 94
-#### 95
-#### 96
-#### 97
-#### 98
-#### 99
-#### 100
-#### 101
-### Section 12 - Aamazon S3 Introduction
-#### 129
-#### 130
-#### 131
-#### 132
-#### 133
-#### 134
-#### 135
-#### 136
-#### 137
-#### 138
-#### 139
-#### 140
-#### 141
-#### 142
-### Section 15 - Cloudfront & AWS Global Accelerator
-#### 166
-#### 167
-#### 168
-#### 169
-#### 170
-#### 171
-#### 172
-#### 173
-### Section 17 - Decoupling applications: SQS, SNS, Kinesis, Active MQ
-#### 184
-#### 185
-#### 186
-#### 187
-#### 188
-#### 189
-#### 190
-#### 191
-#### 192
-#### 193
-#### 194
-#### 195
-#### 196
-#### 197
-#### 198
-#### 199
+#### [61 AMI hands on](https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/learn/lecture/26098284#content)
+#### [62 EC2 instance store](https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/learn/lecture/26098288#content)
+- even higher performance -> a hardware disk attached to your machine
+- ephemeral storage
+- local EC2 instance store ->  high IOPS 
+#### [63 EBS volume types](https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/learn/lecture/26098296#content)
+- IOPS (I/O per second)
+#### [64 EBS multi attach](https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/learn/lecture/26098298#content)
 
+
+
+#### 65 EBS encryption
+
+- how to encrypt an EBS volume?
+
+#### 66 Amazon EFS
+#### 67 Amazon EFS hands on
+#### 68 EFS vs EBS
+#### 69 EBS & EFS
+### Section 8 - High availablity and scalability: ELB & ASG
+#### 70 High availability & scalability
+#### 71 Elastic Load balancing (ELB) overview
+#### 72 Note: about the classic load balancer (CLB)
+#### 73 Application Load balancer (ALB) 
+#### 74 Application Load balancer (ALB) hands on - pt 1
+#### 75 Application Load balancer (ALB) hands on part 2
+#### 76 Network Load balancer (NLB)
+#### 77 Network Load balancer (NLB) hands on
+#### 78 Gateway Load balancer (GWLB)
+#### 79 Elastic Load balancer - sticky sessions
+#### 80 Elastic Load balancer - cross zone load balancing
+#### 81 Elastic Load balancer - SSL certificates
+#### 82 Elastic load balancer - SSL certificates - Hands on
+#### 83 Elastic Load balancer - connection draining
+#### 84 Auto scaling groups - Hands on
+#### 85 Auto scaling Group Hands on
+#### 86 Auto scaling Groups - scaling policies
+#### 87 Auto scaling Groups - scaling policies Hands on 
+### Section 9 - AWS Fundamentals: RDS + Aurora + ElastiCache
+#### 88 Amazon RDS Overview
+#### 89 RDS Read Replicas vs multi AZ
+#### 90 Amazon RDS Hands On
+#### 91 RDS custom for Oracle and Microsoft SQL server
+#### 92 Amazon Aurora 
+#### 93 Amazon Aurora - hands on
+#### 94 Amazon Aurora - Advanced Concepts
+#### 95 RDS & Aurora - Backup and Monitoring
+#### 96 RDS Security
+#### 97 RDS Proxy
+#### 98 Elasticache Overview
+#### 99 Elasticache hands on
+#### 100 Elasticache for solution architects
+#### 101 List of Ports to be familiar with
+### Section 12 - Aamazon S3 Introduction
+#### 129 S3 Overview
+#### 130 S3 Hands on
+#### 131 S3 Security Bucket Policy
+#### 132 S3 Security: Bucket Policy Hands on
+#### 133 S3 Website Overview
+#### 134 S3 Website Hands On
+#### 135 S3 Versioning
+#### 136 S3 Versioning - hands on
+#### 137 S3 Replication
+#### 138 S3 Replication Notes
+#### 139 S3 Replication Hands on
+#### 140 S3 Storage Classes Overview
+#### 141 S3 storage Classes hands on
+#### 142 S3 Express One Zone
+### Section 15 - Cloudfront & AWS Global Accelerator
+#### 166 Cloudfront Overview
+#### 167 CloudFront with S3 - Hands On
+#### 168 CloudFront - ALB/EC2 as an Origin
+#### 169 Cloudfront - Geo Restriction
+#### 170 Cloudfront - Price Classes
+#### 171 CloudFront - Cache Invalidation
+#### 172 AWS Global Accelerator - overview
+#### 173 AWS Global Accelerator Hands on
+### Section 17 - Decoupling applications: SQS, SNS, Kinesis, Active MQ
+#### 184 Introduction to messaging
+#### 185 Amazon SQS - standard queues overview
+#### 186 SQS - standard queue hands on
+#### 187 SQS - Message Visibility Timeout
+#### 188 SQS - long polling
+#### 189 SQS - FIFO Queues
+#### 190 SQS + autoscaling group
+#### 191 Amazon simple Notification Service (AWS SNS)
+#### 192 SNS and SQS - fan out pattern
+#### 193 SNS -hands on
+#### 194 Amazon Kinesis Data streams
+#### 195 Amazon Kinesis Data streams - hands on
+#### 196 Amazon Data Firehose
+#### 197 Amazon Data Firehose - hands on 
+#### 198 SQS vs SNS vs kinesis
+#### 199 Amazon MQ
 ### Section 19 - Serverless Overview from a Solution Architecture Perspective
-#### 214
-#### 215
-#### 216
-#### 217
-#### 218
-#### 219
-#### 220
-#### 221
-#### 222
-#### 223
-#### 224
-#### 225
-#### 226
-#### 227
-#### 228
-#### 229
-#### 230
-#### 231
+#### 214 About the serverless section
+#### 215 Serverless introduction
+#### 216 Lambda Overview
+#### 217 Lambda Hands-on
+#### 218 Lambda limits
+#### 219 Lambda Concurrency
+#### 220 Lambda Concurrency - hands on
+#### 221 Lambda snap-start
+#### 222 Lambda@Edge & cloudfront function
+#### 223 Lambda in VPC
+#### 224 RDS - invoking Lambda & Event Notifications
+#### 225 Amazon DynamoDB
+#### 226 Amazon DynamoDB - hands on
+#### 227 Amazon DynamoDB - Advanced features
+#### 228 API Gateway Overview
+#### 229 API Gateway Basics Hands-on
+#### 230 Step Functions
+#### 231 Amazon Cognito Overview
 ### Section 21: Databases in AWS
-#### 236
-#### 237
-#### 238
-#### 239
-#### 240
-#### 241
-#### 242
-#### 243
-#### 244
-#### 245
+#### 236 Choosing the right database
+#### 237 RDS
+#### 238 Aurora
+#### 239 Elasticache
+#### 240 DynamoDB
+#### 241 S3
+#### 242 DocumentDB
+#### 243 Neptune
+#### 244 Keyspaces(for Apache Cassandra)
+#### 245 Timestream
 ### Section 24: AWS Monitoring & Audit: CloudWatch, CloudTrail & Config
-#### 270
-#### 271
-#### 272
-#### 273
-#### 274
-#### 275
-#### 276
-#### 277
-#### 278
-#### 279
-#### 280
-#### 281
-#### 282
-#### 283
-#### 284
-#### 285
-#### 286
+#### 270 AWS monitoring - section introduction
+#### 271 CloudWatch metrics
+#### 272 CloudWacth Logs
+#### 273 CloudWatch Logs - hands on
+#### 274 CloudWatch Logs - live tail - hands on
+#### 275 CloudWatch Agent & Cloudwatch Logs Agent
+#### 276 Cloudwatch Alarms
+#### 277 Cloudwatch alarms Hands on
+#### 278 Event bridge Overview(formerly Cloudwatch Events)
+#### 279 Amazon EventBridge - hands on
+#### 280 CLoudWatch Insights and Operational Visibility
+#### 281 CloudTrail Overview
+#### 282 CloudTrail Hands on
+#### 283 CloudTrail - Event Bridge Intergration
+#### 284 AWS Config - Overview
+#### 285 AWS Config - hands on
+#### 286 cloudtrail vs CloudWatch vs Config
 ### Section 26: AWS Security & Encryption: KMS, SSM Parameter Store, SHield, WAF
 ( only watch videos 304 and 307)
-#### 304
-#### 307
+#### 304 SSM Parameter Store overview
+#### 307 AWS Secrets Manager - Hands on
 ### Section 27 Networking - VPC
-#### 317
-#### 318
-#### 319
-#### 320
-#### 321
-#### 322
-#### 323
-#### 324
-#### 325
-#### 326
-#### 327
-#### 328
-#### 329
-#### 330
-#### 331
-#### 332
-#### 333
-#### 334
-#### 335
+#### 317 Section Introduction
+#### 318 CIDR, Private vs Public IP
+#### 319 Default VPC Overview
+#### 320 VPC overview
+#### 321 VPC Hands on
+#### 322 Subnet Overview
+#### 323 Subnet Hands on
+#### 324 Internet Gateways & Route Tables
+#### 325 Internet Gateways & Route Tables Hands on
+#### 326 Bastion Hosts
+#### 327 Bastion Hosts Hands on
+#### 328 NAT instances
+#### 329 NAT instances Hands on
+#### 330 NAT gateways
+#### 331 NAT Gateways hands on
+#### 332 NACL & security groups
+#### 333 NACL & security Groups Hands on
+#### 334 VPC peering
+#### 335 VPC peering hands on
 (skip videos from 335 until the end)
