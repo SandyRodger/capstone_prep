@@ -1,5 +1,5 @@
-# Intro to distributed systems - Julius Zerwick
-## Intro
+# [Intro to distributed systems - Julius Zerwick
+## Intro](https://launchschool.com/gists/7003b6e8)
 - [01:10] - goals
 - [02:00] Why should you learn about distributed systems:
   - High chance you'll have to work with them
