@@ -83,7 +83,9 @@ https://learn.cantrill.io/p/docker-fundamentals
 <img width="554" height="303" alt="Screenshot 2025-08-22 at 14 16 56" src="https://github.com/user-attachments/assets/87ca561e-9fc7-4ee9-a8b2-e26a257734ef" />
 
 ### Docker Architecture
-### Interacting with Docker Engine
+### [Interacting with Docker Engine](https://learn.cantrill.io/courses/docker-fundamentals/lectures/44706186)
+
+
 ### Container and image architecture
 ### Working with existing docker images
 ### Dockerfile syntax
