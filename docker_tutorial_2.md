@@ -223,6 +223,25 @@ docker run -d --name phpmyadmin \
  - docker stop phpmyadmin
  - docker rm phpmyadmin
 ### [Docker bind mounts & volumes](https://learn.cantrill.io/courses/docker-fundamentals/lectures/45142283)
+- docker run --name phpmyadmin -d -p 8081:80 -e PMA_ARBITRARY=1 phpmyadmin/phpmyadmin
+- BUG -> the container of cats page is persisting even though I have quit and removed all the containers.
+### [docker compose](https://learn.cantrill.io/courses/docker-fundamentals/lectures/44660846)
+- compose.yaml
+- docker-compose.yaml
+<img width="1097" height="538" alt="Screenshot 2025-08-23 at 21 01 47" src="https://github.com/user-attachments/assets/74af0cdb-a635-41c4-bc00-5205528e8f81" />
 
+### [[DEMO] Using Docker Compose with our application](https://learn.cantrill.io/courses/docker-fundamentals/lectures/44660848)
+
+password: ZSTP$kkG(ZN#60tfMx
+### [Container Registry](https://learn.cantrill.io/courses/docker-fundamentals/lectures/44151210)
+
+### [[DEMO] Uploading our application to docker hub](https://learn.cantrill.io/courses/docker-fundamentals/lectures/44151211)
+
+- sandy851/newcontainerofcats
+- docker push sandy851/newcontainerofcats:tagname
+- password: SwordOfMonkey
+- newcontainerofcats         latest         7a91a209a6ac   22 hours ago   350MB
+7a91a209a6ac
 ## FINISHING UP & WHAT'S NEXT
+### [What's next - Docker, Kubernetes, AWS, Azure](https://learn.cantrill.io/courses/docker-fundamentals/lectures/44151214)
 Docker fundamentals
