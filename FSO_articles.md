@@ -84,5 +84,58 @@ function UserInfo() {
 4. Updating the context
 5. Conclusion
 # [useReducer Hook](https://dmitripavlutin.com/react-usereducer/)
+
+- A React component should usually contianer th logic that calculates the output, but the state management logic is a different concern that should be managed in a seperate place.
+- To help seperate the concerns (rendering state and management) React gives us the `useReducer()` hook.
+- This hook extracts the state management out of the component.
+
+1. useReducer()
+2. A stopwatch
+```
+import { useReducer, useEffect, useRef } from 'react';
+
+function Stopwatch() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const idRef = useRef(0);
+
+  useEffect(() => {
+    if (!state.isRunning) { 
+      return; 
+    }
+    idRef.current = setInterval(() => dispatch({ type: 'tick' }), 1000);
+    return () => {
+      clearInterval(idRef.current);
+      idRef.current = 0;
+    };
+  }, [state.isRunning]);
+  
+  return (
+    <div>
+      {state.time}s
+      <button onClick={() => dispatch({ type: 'start' })}>
+        Start
+      </button>
+      <button onClick={() => dispatch({ type: 'stop' })}>
+        Stop
+      </button>
+      <button onClick={() => dispatch({ type: 'reset' })}>
+        Reset
+      </button>
+    </div>
+  );
+}
+```
+
+3. A mental model
+
+<img width="551" height="307" alt="Screenshot 2025-08-25 at 15 30 38" src="https://github.com/user-attachments/assets/ef1e9163-3f2b-4eca-8e68-0467f4eac895" />
+
+4. Conclusion
+
 # [useCallback Hook](https://dmitripavlutin.com/dont-overuse-react-usecallback/)
+
+## Understanding functions equality check
+
+
+
 # [useEffect Hook](https://dmitripavlutin.com/react-useeffect-explanation/)
