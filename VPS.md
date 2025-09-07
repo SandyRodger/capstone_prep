@@ -8,17 +8,17 @@
 - Type 1 hypervisors
 - Type2 hypervisors
   - eg Oracle
-- You can move hypervisors to other machiens instantly
+- You can move hypervisors to other machines instantly
 - benefits:
   - cost savings (physical infastructure)
   - Agility/speed
   - lowers downtime (hosts unexpectedly going down).
 ### What are we doing with VPSs:
-- Each capstone student will be setting up a  VPS and installing several different pieces of software on it . It will act as a basic architecture that can run multiple applicatuons including a dynamic one backed by a data later.
+- Each capstone student will be setting up a  VPS and installing several different pieces of software on it . It will act as a basic architecture that can run multiple applications including a dynamic one backed by a data later.
 - We will be installing:
   - A webserver that can route requests to 2 different applications
   - A static site, one of our applicatuion
-  - A dynamic application: outn other apoplication server that queries two different databases.
+  - A dynamic application: our other apoplication server that queries two different databases.
   - MongoDB, our non-relational, document database
   - PostgreSQL, our relational database:
 
@@ -36,8 +36,8 @@
 4. Install Nginx
 5. Deploy a static site
 6. Install ProstgreSQL
-7. Install MOngoDB
-8. Deploy a dynamuc app that stores/ retrieves data from both Postgres and Mongo
+7. Install MongoDB
+8. Deploy a dynamic app that stores/retrieves data from both Postgres and Mongo
 
 ### [tutorial](https://launchschool.com/gists/79b8e672)
 
@@ -45,7 +45,7 @@
 
 - How to set up a virtual Private Server on Digital Ocean -> a way to host your own website on the cloud.
 - Virtual Private server: a computer that someone else is managing for you (here DigitalOcean)
-- [01:32] We will build a VPS which can serve a website we've build. To do this it needs a few components:
+- [01:32] We will build a VPS which can serve a website we've built. To do this it needs a few components:
   - VPS
   - Other servers on the same machine:
     - The firewall (a bouncer for network traffic)
