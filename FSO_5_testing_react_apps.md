@@ -2,7 +2,28 @@
 
 ## [a login front end](https://fullstackopen.com/en/part5/login_in_frontend)
 
+### Adding a Login Form
+
+- ok
+
 ### Handling login
+
+- ok
+
+### Conditional Rendering of the Login Form
+
+- yes: 
+
+```
+   {!user && loginForm()}
+      {user && (
+        <div>
+          <p>{user.name} logged in</p>
+          {noteForm()}
+        </div>
+      )}
+```
+
 ```
 {user === null && loginForm()}
 {user !== null && noteForm()}
@@ -16,6 +37,13 @@ equivalent to
     }
 
 ```
+
+### Note on Using the Label Element
+
+- You can get away without it but it tels the browser what you're doing which has useful effects:
+    - readers for the blind can read it
+    - when you click on it the browser focuses on that
+
 ### Creating new notes
 - creating a new note involves an authorization token now:
 ```
